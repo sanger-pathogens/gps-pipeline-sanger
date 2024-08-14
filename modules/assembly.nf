@@ -2,7 +2,7 @@
 // Return sample_id and assembly, and publish the assembly to ${params.output}/assemblies directory based on ${params.assembly_publish}
 process ASSEMBLY_UNICYCLER {
     label 'unicycler_container'
-    label 'farm_high_fallible'
+    label 'farm_high'
 
     errorStrategy 'ignore'
 
@@ -37,7 +37,7 @@ process ASSEMBLY_UNICYCLER {
 // Return sample_id and assembly, and publish the assembly to ${params.output}/assemblies directory based on ${params.assembly_publish}
 process ASSEMBLY_SHOVILL {
     label 'shovill_container'
-    label 'farm_high_fallible'
+    label 'farm_high'
 
     errorStrategy 'ignore'
 

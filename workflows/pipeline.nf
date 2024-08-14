@@ -37,7 +37,7 @@ workflow PIPELINE {
     FILE_VALIDATION(raw_read_pairs_ch)
 
     // From Channel raw_read_pairs_ch, only output valid reads of samples based on Channel FILE_VALIDATION.out.result
-    VALID_READS_ch = FILE_VALIDATION.out.result.join(raw_read_pairs_ch, failOnDuplicate: true, failOnMismatch: true)
+    VALID_READS_ch = FILE_VALIDATION.out.result.join(raw_read_pairs_ch, failOnDuplicate: true)
                         .filter { it[1] == 'PASS' }
                         .map { it[0, 2..-1] }
 
@@ -50,7 +50,7 @@ workflow PIPELINE {
     READ_QC(PREPROCESS.out.json, params.length_low, params.depth)
 
     // From Channel PREPROCESS.out.processed_reads, only output reads of samples passed Read QC based on Channel READ_QC.out.result
-    READ_QC_PASSED_READS_ch = READ_QC.out.result.join(PREPROCESS.out.processed_reads, failOnDuplicate: true, failOnMismatch: true)
+    READ_QC_PASSED_READS_ch = READ_QC.out.result.join(PREPROCESS.out.processed_reads, failOnDuplicate: true)
                         .filter { it[1] == 'PASS' }
                         .map { it[0, 2..-1] }
 
@@ -98,7 +98,7 @@ workflow PIPELINE {
     // Output into Channels MAPPING_QC.out.result & MAPPING_QC.out.report
     MAPPING_QC(
         SAM_TO_SORTED_BAM.out.ref_coverage
-        .join(HET_SNP_COUNT.out.result, failOnDuplicate: true, failOnMismatch: true),
+        .join(HET_SNP_COUNT.out.result, failOnDuplicate: true),
         params.ref_coverage,
         params.het_snp_site
     )
@@ -115,7 +115,7 @@ workflow PIPELINE {
     // Output into Channel OVERALL_QC.out.result & OVERALL_QC.out.report
     OVERALL_QC(
         raw_read_pairs_ch.map{ it[0] }
-        .join(FILE_VALIDATION.out.result, failOnDuplicate: true, failOnMismatch: true)
+        .join(FILE_VALIDATION.out.result, failOnDuplicate: true, remainder: true)
         .join(READ_QC.out.result, failOnDuplicate: true, remainder: true)
         .join(ASSEMBLY_QC.out.result, failOnDuplicate: true, remainder: true)
         .join(MAPPING_QC.out.result, failOnDuplicate: true, remainder: true)
