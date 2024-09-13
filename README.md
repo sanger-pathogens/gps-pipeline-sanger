@@ -50,36 +50,30 @@ The development of this pipeline is part of the GPS Project ([Global Pneumococca
 &nbsp;
 # Usage
 ## Requirements
-### Software 
-  - A POSIX-compatible operating system (e.g. Linux, macOS, Windows with [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) with Bash 3.2 or later
+### Software
+- A POSIX-compatible operating system (e.g. Linux, macOS, Windows with [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) with Bash 3.2 or later
     - [Installation guide for WSL on Windows](https://learn.microsoft.com/en-us/windows/wsl/install) by Microsoft
-  - Java 11 or later (up to 22) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
+- Java 11 or later (up to 22) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
     - [Installation guide for OpenJDK](https://www.freecodecamp.org/news/install-openjdk-free-java-multi-os-guide/) by freeCodeCamp
-  - [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/)
+- [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/)
     - Installation guides:
-      - For Linux
-        > [!TIP] 
-        > [Docker Engine](https://docs.docker.com/engine/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/) is recommended. [Docker Desktop for Linux](https://docs.docker.com/desktop/) is known to [cause permission issues](https://github.com/docker/desktop-linux/issues/81) on Linux, which could prevent the pipeline from working. 
-        - [Docker Engine on Linux](https://docs.docker.com/engine/install/) by Docker
-          > [!IMPORTANT] 
-          > Make sure you also install `docker-compose-plugin` as per the guide
-        - [Apptainer on Linux](https://apptainer.org/docs/admin/main/installation.html) by Apptainer
-      - For macOS
-        - [Docker Desktop on macOS](https://docs.docker.com/desktop/install/mac-install/) by Docker
-          > [!IMPORTANT] 
-          > After installation, you might need to [allow Docker to access more system resources](https://docs.docker.com/desktop/settings/mac/), especially CPU and Memory, to match the hardware requirement of the pipeline
-      - For Windows with WSL
+        - For Linux ([Docker Desktop for Linux](https://docs.docker.com/desktop/) is not recommended as it is known to [cause permission issues](https://github.com/docker/desktop-linux/issues/81) on Linux, which could prevent the pipeline from working)
+            - [Docker Engine on Linux](https://docs.docker.com/engine/install/) by Docker (must install `docker-compose-plugin` as per the guide)
+            - [Apptainer on Linux](https://apptainer.org/docs/admin/main/installation.html) by Apptainer
+        - For macOS
+            - [Docker Desktop on macOS](https://docs.docker.com/desktop/install/mac-install/) by Docker (should [allow Docker to access enough system resources](https://docs.docker.com/desktop/settings/mac/), e.g. CPU and Memory)
+    - For Windows with WSL
         - [Docker Desktop on Windows with WSL](https://docs.docker.com/desktop/wsl/) by Docker
 
 ### Hardware 
 It is recommended to have at least 16GB of RAM and 100GB of free storage
-  > [!NOTE] Details on storage
-  > - The pipeline core files use ~5MB
-  > - All default databases use ~19GB in total
-  > - All Docker images use ~13GB in total; alternatively, Singularity images use ~4.5GB in total
-  > - The pipeline generates ~1.8GB intermediate files for each sample on average
-  >    - These files can be removed when the pipeline run is completed, please refer to [Clean Up](#clean-up)
-  >    - To further reduce storage requirement by sacrificing the ability to resume the pipeline, please refer to [Experimental](#experimental)
+> [!NOTE] Details on storage
+> - The pipeline core files use ~5MB
+> - All default databases use ~19GB in total
+> - All Docker images use ~13GB in total; alternatively, Singularity images use ~4.5GB in total
+> - The pipeline generates ~1.8GB intermediate files for each sample on average
+>    - These files can be removed when the pipeline run is completed, please refer to [Clean Up](#clean-up)
+>    - To further reduce storage requirement by sacrificing the ability to resume the pipeline, please refer to [Experimental](#experimental)
 ## Accepted Inputs
 - Only Illumina paired-end short reads are supported
 - Each sample is expected to be a pair of raw reads following this file name pattern: 
