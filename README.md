@@ -58,24 +58,28 @@ The development of this pipeline is part of the GPS Project ([Global Pneumococca
   - [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/)
     - Installation guides:
       - For Linux
-        > ℹ️ For Linux, [Docker Engine](https://docs.docker.com/engine/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/) is recommended. [Docker Desktop for Linux](https://docs.docker.com/desktop/) is known to [cause permission issues](https://github.com/docker/desktop-linux/issues/81) on Linux, which could prevent the pipeline from working. 
+        > [!TIP] 
+        > [Docker Engine](https://docs.docker.com/engine/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/) is recommended. [Docker Desktop for Linux](https://docs.docker.com/desktop/) is known to [cause permission issues](https://github.com/docker/desktop-linux/issues/81) on Linux, which could prevent the pipeline from working. 
         - [Docker Engine on Linux](https://docs.docker.com/engine/install/) by Docker
-          > ℹ️ Make sure you also install `docker-compose-plugin` as per the guide
+          > [!IMPORTANT] 
+          > Make sure you also install `docker-compose-plugin` as per the guide
         - [Apptainer on Linux](https://apptainer.org/docs/admin/main/installation.html) by Apptainer
       - For macOS
         - [Docker Desktop on macOS](https://docs.docker.com/desktop/install/mac-install/) by Docker
-          > ℹ️ After installation, you might need to [allow Docker to access more system resources](https://docs.docker.com/desktop/settings/mac/), especially CPU and Memory, to match the hardware requirement of the pipeline
+          > [!IMPORTANT] 
+          > After installation, you might need to [allow Docker to access more system resources](https://docs.docker.com/desktop/settings/mac/), especially CPU and Memory, to match the hardware requirement of the pipeline
       - For Windows with WSL
         - [Docker Desktop on Windows with WSL](https://docs.docker.com/desktop/wsl/) by Docker
 
 ### Hardware 
 It is recommended to have at least 16GB of RAM and 100GB of free storage
-  > ℹ️ Details on storage
+  > [!NOTE] Details on storage
   > - The pipeline core files use ~5MB
   > - All default databases use ~19GB in total
   > - All Docker images use ~13GB in total; alternatively, Singularity images use ~4.5GB in total
-  > - The pipeline generates ~1.8GB intermediate files for each sample on average<br>(These files can be removed when the pipeline run is completed, please refer to [Clean Up](#clean-up))<br>
-  (To further reduce storage requirement by sacrificing the ability to resume the pipeline, please refer to [Experimental](#experimental))
+  > - The pipeline generates ~1.8GB intermediate files for each sample on average
+  >    - These files can be removed when the pipeline run is completed, please refer to [Clean Up](#clean-up)
+  >    - To further reduce storage requirement by sacrificing the ability to resume the pipeline, please refer to [Experimental](#experimental)
 ## Accepted Inputs
 - Only Illumina paired-end short reads are supported
 - Each sample is expected to be a pair of raw reads following this file name pattern: 
@@ -96,7 +100,8 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
     cd gps-pipeline
     ```
 3. (Optional) You could perform an initialisation to download all required additional files and container images, so the pipeline can be used at any time with or without the Internet afterwards.
-    > ⚠️ Docker or Singularity must be running, and an Internet connection is required.
+    > [!WARNING]
+    > Docker or Singularity must be running, and an Internet connection is required.
     - Using Docker as the container engine
       ```
       ./run_pipeline --init
@@ -107,11 +112,12 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
       ```
 
 ## Run
-> ⚠️ Docker or Singularity must be running.
-<!-- -->
-> ⚠️ If this is the first run and initialisation was not performed, an Internet connection is required.
-<!-- -->
-> ℹ️ By default, Docker is used as the container engine and all the processes are executed by the local machine. See [Profile](#profile) for details on running the pipeline with Singularity or on a HPC cluster.
+> [!WARNING]
+> - Docker or Singularity must be running.
+> - If this is the first run and initialisation was not performed, an Internet connection is required.
+
+> [!NOTE]
+> By default, Docker is used as the container engine and all the processes are executed by the local machine. See [Profile](#profile) for details on running the pipeline with Singularity or on a HPC cluster.
 - You can run the pipeline without options. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
   ```
   ./run_pipeline
@@ -130,7 +136,8 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 
 ## Profile
 - By default, Docker is used as the container engine and all the processes are executed by the local machine. To change this, you could use Nextflow's built-in `-profile` option to switch to other available profiles
-  > ℹ️ `-profile` is a built-in Nextflow option, it only has one leading `-`
+  > [!TIP]
+  > `-profile` is a built-in Nextflow option, it only has one leading `-`
   ```
   ./run_pipeline -profile [profile name]
   ```
@@ -144,7 +151,8 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 ## Resume
 - If the pipeline is interrupted mid-run, Nextflow's built-in `-resume` option can be used to resume the pipeline execution instead of starting from scratch again
 - You should use the same command of the original run, only add `-resume` at the end (i.e. all pipeline options should be identical) 
-  > ℹ️ `-resume` is a built-in Nextflow option, it only has one leading `-`
+  > [!TIP]
+  > `-resume` is a built-in Nextflow option, it only has one leading `-`
   - If the original command is
     ```
     ./run_pipeline --reads /path/to/raw-reads-directory
@@ -187,11 +195,10 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
   ```
   ./run_pipeline [option] [value]
   ```
-> ℹ️ To permanently change the value of an option, edit the `nextflow.config` file inside the `gps-pipeline` local directory.
-<!-- -->
-> ℹ️ `$projectDir` is a [Nextflow built-in implicit variables](https://www.nextflow.io/docs/latest/script.html?highlight=projectdir#implicit-variables), it is defined as the local directory of `gps-pipeline`.
-<!-- -->
-> ℹ️ Pipeline options are not built-in Nextflow options, they are lead with `--` instead of `-`
+> [!TIP] 
+> - To permanently change the value of an option, edit the `nextflow.config` file inside the `gps-pipeline` local directory.
+> - `$projectDir` is a [Nextflow built-in implicit variables](https://www.nextflow.io/docs/latest/script.html?highlight=projectdir#implicit-variables), it is defined as the local directory of `gps-pipeline`.
+> - Pipeline options are not built-in Nextflow options, they are lead with `--` instead of `-`
 
 ## Alternative Workflows
   | Option | Values | Description |
@@ -201,10 +208,10 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
   | `--help` | `true` or `false`<br />(Default: `false`)| Show help message.<br />Can be enabled by including `--help` without value. |
 
 ## Input and Output
-  > ⚠️ `--output` overwrites existing results in the target directory if there is any
-  <!-- -->
-  > ⚠️ `--db` does not accept user provided local databases, directory content will be overwritten
-  <!-- -->
+  > [!WARNING]
+  > - `--output` overwrites existing results in the target directory if there is any
+  > - `--db` does not accept user provided local databases, directory content will be overwritten
+
   | Option | Values | Description |
   | --- | ---| --- |
   | `--reads` | Any valid path<br />(Default: `"$projectDir/input"`) | Path to the input directory that contains the reads to be processed. |
@@ -213,8 +220,10 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
   | `--assembly_publish` | `"link"` or `"symlink"` or `"copy"`<br />(Default: `"link"`)| Method used by Nextflow to publish the generated assemblies.<br>(The default setting `"link"` means hard link, therefore will fail if the output directory is set to outside of the working file system) |
 
 ## QC Parameters
-> ℹ️ Read QC does not have directly accessible parameters. The minimum base count in reads of Read QC is based on the multiplication of `--length_low` and `--depth` of Assembly QC (i.e. default value is `38000000`).
-<!-- -->
+> [!NOTE]
+> - Read QC does not have directly accessible parameters
+> - The minimum base count in reads of Read QC is based on the multiplication of `--length_low` and `--depth` of Assembly QC (i.e. default value is `38000000`)
+
   | Option | Values | Description |
   | --- | ---| --- |
   | `--spneumo_percentage` | Any integer or float value<br />(Default: `60.00`) | Minimum *S. pneumoniae* percentage in reads to pass Taxonomy QC. |
@@ -227,7 +236,9 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
   | `--depth` | Any integer or float value<br />(Default: `20.00`) | Minimum sequencing depth to pass Assembly QC. |
   
 ## Assembly
-> ℹ️ The output of SPAdes-based assembler is deterministic for a given count of threads. Hence, using `--assembler_thread` with a specific value can guarantee the generated assemblies will be reproducible for others using the same value.
+> [!TIP]
+> - The output of SPAdes-based assembler is deterministic for a given count of threads
+> - Using `--assembler_thread` with a specific value can guarantee the generated assemblies will be reproducible for others using the same value
 <!-- -->
   | Option | Values | Description |
   | --- | ---| --- |
@@ -266,7 +277,8 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
   | `--resistance_to_mic` | Any valid path to a `tsv` file<br />(Default: `"$projectDir/data/resistance_to_MIC.tsv"`) | Path to the resistance phenotypes to MIC (minimum inhibitory concentration) lookup table. |
 
 ## Singularity
-  > ℹ️ This section is only valid when Singularity is used as the container engine
+  > [!NOTE]
+  > This section is only valid when Singularity is used as the container engine
 
   | Option | Values | Description |
   | --- | ---| --- |
@@ -293,20 +305,17 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 
 ## Details of `results.csv`
 - The following fields can be found in the output `results.csv`
-  > ℹ️ The output fields in Other AMR / Virulence type depends on the provided ARIBA reference sequences and metadata file, and resistance phenotypes to MIC lookup table, the below table is based on the defaults.
-  <!-- -->
-  > ℹ️ The inferred Minimum Inhibitory Concentration (MIC) range of an antimicrobial in "Other AMR" type is only provided if it is included in the resistance phenotypes to MIC lookup table. The default lookup table is based on 2014 CLSI guidelines.
-    <!-- -->
-  > ℹ️ For resistance phenotypes: S = Sensitive/Susceptible; I = Intermediate; R = Resistant
-    <!-- -->
-  > ℹ️ For virulence genes: POS = Positive; NEG = Negative
-  <!-- -->
-  > ⚠️ If the result of `Overall_QC` of a sample is `READ_ONE_CORRUPTED`, `READ_TWO_CORRUPTED` or both, the specific read file is found to be corrupted (i.e. incomplete/damaged Gzip file, mis-match(s) in read length and quality-score length). You might want to reacquire the read file from its source, or discard the sample if the source file is corrupted as well. 
-  <!-- -->
-  > ⚠️ If the result of `Overall_QC` of a sample is `ASSEMBLER FAILURE`, the assembler has crashed when trying to assembly the reads. You might want to re-run the sample with [another assembler](#assembly), or discard the sample if it is a low quality one.
-  <!-- -->
-  > ⚠️ If the result of `Serotype` of a sample is `SEROBA FAILURE`, SeroBA has crashed when trying to serotype the sample.
-  <!-- -->
+  > [!NOTE]
+  > - The output fields in `Other AMR` and `Virulence` types depend on the provided ARIBA reference sequences and metadata file, and resistance phenotypes to MIC lookup table, the below table is based on the defaults.
+  > - The inferred Minimum Inhibitory Concentration (MIC) range of an antimicrobial in `Other AMR` type is only provided if it is included in the resistance phenotypes to MIC lookup table. The default lookup table is based on 2014 CLSI guidelines.
+  > - For resistance phenotypes: `S` = Sensitive/Susceptible; `I` = Intermediate; `R` = Resistant
+  > - For virulence genes: `POS` = Positive; `NEG` = Negative
+
+  > [!TIP]
+  > - If the result of `Overall_QC` of a sample is `READ_ONE_CORRUPTED`, `READ_TWO_CORRUPTED` or both, the specific read file is found to be corrupted (i.e. incomplete/damaged Gzip file, mis-match(s) in read length and quality-score length). You might want to reacquire the read file from its source, or discard the sample if the source file is corrupted as well. 
+  > - If the result of `Overall_QC` of a sample is `ASSEMBLER FAILURE`, the assembler has crashed when trying to assembly the reads. You might want to re-run the sample with [another assembler](#assembly), or discard the sample if it is a low quality one.
+  > - If the result of `Serotype` of a sample is `SEROBA FAILURE`, SeroBA has crashed when trying to serotype the sample.
+
   | Field | Type | Description |
   | --- | --- | --- |
   | `Sample_ID` | Identification | Sample ID based on the raw reads file name |
@@ -431,7 +440,7 @@ This project uses open-source components. You can find the homepage or source co
 - This Docker image provides the containerised environment with Python and Pandas for `GENERATE_OVERALL_REPORT` process of the `output.nf` module, `HET_SNP_COUNT` process of the `mapping.nf` module and `PARSE_OTHER_RESISTANCE` process of the `amr.nf` module
 
 [fastp](https://github.com/OpenGene/fastp)
-- Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884–i890, https://doi.org/10.1093/bioinformatics/bty560
+- Shifu Chen, Yanqing Zhou, Yaru Chen, Jia Gu; fastp: an ultra-fast all-in-one FASTQ preprocessor, Bioinformatics, Volume 34, Issue 17, 1 September 2018, Pages i884-i890, https://doi.org/10.1093/bioinformatics/bty560
 - License (MIT): https://github.com/OpenGene/fastp/blob/master/LICENSE
 - This tool is used in `PREPROCESS` process of the `preprocess.nf` module
 
@@ -457,7 +466,7 @@ This project uses open-source components. You can find the homepage or source co
 - This tool is used in `MLST` process of the `mlst.nf` module
 
 [Nextflow](https://www.nextflow.io/)
-- P. Di Tommaso, et al. Nextflow enables reproducible computational workflows. Nature Biotechnology 35, 316–319 (2017) doi:[10.1038/nbt.3820](http://www.nature.com/nbt/journal/v35/n4/full/nbt.3820.html)
+- P. Di Tommaso, et al. Nextflow enables reproducible computational workflows. Nature Biotechnology 35, 316-319 (2017) doi:[10.1038/nbt.3820](http://www.nature.com/nbt/journal/v35/n4/full/nbt.3820.html)
 - License (Apache 2.0): https://github.com/nextflow-io/nextflow/blob/master/COPYING
 - This project is a Nextflow pipeline; Nextflow executable `nextflow` is included in this repository
 
