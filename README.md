@@ -3,7 +3,7 @@
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-24.04.4-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
-[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/sanger-bentley-group/gps-pipeline)
+[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
 
 The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials.
 
@@ -89,11 +89,11 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 > - An Internet connection is required
 1. Clone the repository (if Git is installed on your system)
     ```
-    git clone https://github.com/sanger-bentley-group/gps-pipeline.git
+    git clone https://github.com/GlobalPneumoSeq/gps-pipeline.git
     ```
     or 
     
-    Download and unzip/extract the [latest release](https://github.com/sanger-bentley-group/gps-pipeline/releases)
+    Download and unzip/extract the [latest release](https://github.com/GlobalPneumoSeq/gps-pipeline/releases)
 2. Go into the local directory of the pipeline and it is ready to use without installation (the directory name might be different)
     ```
     cd gps-pipeline
