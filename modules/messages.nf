@@ -93,7 +93,7 @@ void endMessage(String selectedWorkflow) {
                 """.stripMargin()
             failMessage = '''
                 |The pipeline has failed.
-                |If you think it is caused by a bug, submit an issue at \"https://github.com/sanger-bentley-group/gps-pipeline/issues\".
+                |If you think it is caused by a bug, submit an issue at \"https://github.com/GlobalPneumoSeq/gps-pipeline/issues\".
                 '''.stripMargin()
             break
         case 'init':
@@ -112,7 +112,7 @@ void endMessage(String selectedWorkflow) {
                 '''.stripMargin()
             failMessage = '''
                 |Failed to get version information on pipeline, tools or databases.
-                |If you think it is caused by a bug, submit an issue at \"https://github.com/sanger-bentley-group/gps-pipeline/issues\"
+                |If you think it is caused by a bug, submit an issue at \"https://github.com/GlobalPneumoSeq/gps-pipeline/issues\"
                 '''.stripMargin()
             break
     }
