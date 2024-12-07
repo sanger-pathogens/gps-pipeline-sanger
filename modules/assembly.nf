@@ -4,8 +4,6 @@ process ASSEMBLY_UNICYCLER {
     label 'unicycler_container'
     label 'farm_high'
 
-    errorStrategy 'ignore'
-
     tag "$sample_id"
 
     publishDir "${params.output}/assemblies", mode: "${params.assembly_publish}"
@@ -38,8 +36,6 @@ process ASSEMBLY_UNICYCLER {
 process ASSEMBLY_SHOVILL {
     label 'shovill_container'
     label 'farm_high'
-
-    errorStrategy 'ignore'
 
     tag "$sample_id"
 
