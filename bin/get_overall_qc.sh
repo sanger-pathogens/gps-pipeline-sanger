@@ -1,6 +1,6 @@
 # Determine overall QC result based on File Validity, Read QC, Assembly QC, Mapping QC and Taxonomy QC
 # In case File Validity is not PASS, save its value (i.e. description of the issue) to Overall QC
-# In case of assembler failure, there will be no Assembly QC input, save ASSEMBLER FAILURE to Overall QC
+# In case of preprocess/assembly/mapping/taxonomy failure, there will be no relevant QC input, save corresponding MODULE FAILURE to Overall QC
 
 assign_overall_qc() {
     if [[ "$FILE_VALIDITY" == "null" ]]; then
@@ -14,7 +14,7 @@ assign_overall_qc() {
     fi
     
     if [[ "$READ_QC" == "null" ]]; then
-        OVERALL_QC="PREPROCESSOR FAILURE"
+        OVERALL_QC="PREPROCESS MODULE FAILURE"
         return
     fi 
     
@@ -24,17 +24,17 @@ assign_overall_qc() {
     fi 
 
     if [[ "$ASSEMBLY_QC" == "null" ]]; then
-        OVERALL_QC="ASSEMBLER FAILURE"
+        OVERALL_QC="ASSEMBLY MODULE FAILURE"
         return
     fi
     
     if [[ "$MAPPING_QC" == "null" ]]; then
-        OVERALL_QC="MAPPER FAILURE"
+        OVERALL_QC="MAPPING MODULE FAILURE"
         return
     fi
 
     if [[ "$TAXONOMY_QC" == "null" ]]; then
-        OVERALL_QC="TAXONOMY CLASSIFIER FAILURE"
+        OVERALL_QC="TAXONOMY MODULE FAILURE"
         return
     fi
 
