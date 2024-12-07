@@ -91,6 +91,9 @@ def get_df_output(input_pattern, output_columns, df_resistance_to_mic):
 
     df_output = add_inferred_mic(df_output, df_resistance_to_mic)
 
+    # Missing in silico results in Overall QC pass samples means failure in corresponding typing module
+    df_output.loc[df_output["Overall_QC"] == "PASS"] = df_output.loc[df_output["Overall_QC"] == "PASS"].fillna(value="MODULE FAILURE")
+
     return df_output
 
 #  Add inferred MIC (minimum inhibitory concentration) based on resistance phenotypes if the drug exists in the lookup table
