@@ -309,9 +309,10 @@ The following directories and files are output into the output directory
 > - For virulence genes: `POS` = Positive; `NEG` = Negative
 
 > [!TIP]
-> - If the result of `Overall_QC` of a sample is `READ_ONE_CORRUPTED`, `READ_TWO_CORRUPTED` or both, the specific read file is found to be corrupted (i.e. incomplete/damaged Gzip file, mis-match(s) in read length and quality-score length). You might want to reacquire the read file from its source, or discard the sample if the source file is corrupted as well. 
-> - If the result of `Overall_QC` of a sample is `ASSEMBLER FAILURE`, the assembler has crashed when trying to assembly the reads. You might want to re-run the sample with [another assembler](#assembly), or discard the sample if it is a low quality one.
-> - If the result of `Serotype` of a sample is `SEROBA FAILURE`, SeroBA has crashed when trying to serotype the sample.
+> - If the `Overall_QC` result for a sample is `READ_ONE_CORRUPTED`, `READ_TWO_CORRUPTED`, or both, the corresponding read file is found to be corrupted (e.g., an incomplete/damaged Gzip file or mismatches in read length and  quality-score length). You may want to reacquire the read file from its source or discard the sample if the source file is also corrupted. 
+> - If the `Overall_QC` result for a sample is `PREPROCESS MODULE FAILURE`, `ASSEMBLY MODULE FAILURE`, `MAPPING MODULE FAILURE`, `TAXONOMY MODULE FAILURE`, or any combination of these, it indicates that a tool in the corresponding QC module crashed while processing the reads.
+>   - For `ASSEMBLY MODULE FAILURE`, you might be able to process the sample using [another assembler](#assembly).
+> - If any *in silico* typing result for a sample is `MODULE FAILURE`, it means the corresponding tool crashed while attempting to process the sample.
 
 The following fields can be found in the output `results.csv`
 
