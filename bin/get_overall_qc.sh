@@ -23,18 +23,22 @@ assign_overall_qc() {
         return
     fi 
 
+    OVERALL_QC=""
+
     if [[ "$ASSEMBLY_QC" == "null" ]]; then
-        OVERALL_QC="ASSEMBLY MODULE FAILURE"
-        return
+        OVERALL_QC+="ASSEMBLY MODULE FAILURE;"
     fi
     
     if [[ "$MAPPING_QC" == "null" ]]; then
-        OVERALL_QC="MAPPING MODULE FAILURE"
-        return
+        OVERALL_QC+="MAPPING MODULE FAILURE;"
     fi
 
     if [[ "$TAXONOMY_QC" == "null" ]]; then
-        OVERALL_QC="TAXONOMY MODULE FAILURE"
+        OVERALL_QC+="TAXONOMY MODULE FAILURE;"
+    fi
+
+    if [[ ! "$OVERALL_QC" == "" ]]; then
+        OVERALL_QC="${OVERALL_QC%;}"
         return
     fi
 
