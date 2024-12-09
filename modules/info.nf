@@ -472,7 +472,7 @@ process FASTP_VERSION {
 
 process UNICYCLER_VERSION {
     label 'unicycler_container'
-    label 'farm_high_fallible'
+    label 'farm_high'
 
     output:
     tuple env(VERSION), env(THREAD)
@@ -486,7 +486,7 @@ process UNICYCLER_VERSION {
 
 process SHOVILL_VERSION {
     label 'shovill_container'
-    label 'farm_high_fallible'
+    label 'farm_high'
 
     output:
     tuple env(VERSION), env(THREAD)
