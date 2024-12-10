@@ -55,6 +55,9 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
 
 &nbsp;
 # Usage
+> [!NOTE]
+> A Quickstart Guide is available [here](GPS_Pipeline_Quickstart_Guide.pdf). Still, we highly recommend reading the [Usage](#usage), [Pipeline Options](#pipeline-options), and [Output](#output) sections for a comprehensive understanding.
+
 ## Requirements
 ### Software
 - A POSIX-compatible operating system (e.g. Linux, macOS, Windows with [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) with Bash 3.2 or later
