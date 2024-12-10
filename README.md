@@ -11,6 +11,12 @@ The pipeline is designed to be easy to set up and use, and is suitable for use o
 
 The development of this pipeline is part of the GPS Project ([Global Pneumococcal Sequencing Project](https://www.pneumogen.net/gps/)). 
 
+## Citation
+If you have used the GPS Pipeline in your research, please cite us in your relevant publications:
+
+> Harry C. H. Hung, Narender Kumar, Victoria Dyster, Corin Yeats, Benjamin Metcalf, Yuan Li, Paulina A. Hawkins, Lesley McGee, Stephen D. Bentley, and Stephanie W. Lo. **A Portable and Scalable Genomic Analysis Pipeline for *Streptococcus pneumoniae* Surveillance: GPS Pipeline**. *bioRxiv* 2024.11.27.625679 **[Preprint]**.  doi: [10.1101/2024.11.27.625679](https://doi.org/10.1101/2024.11.27.625679)
+
+
 &nbsp;
 # Table of contents <!-- omit in toc -->
 - [Workflow](#workflow)
