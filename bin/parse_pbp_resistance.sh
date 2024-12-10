@@ -1,10 +1,10 @@
 # Extract the results from the output file of the PBP AMR predictor
 
-# For all, replace null or space-only string with empty string
+# For all, replace null, empty, or space-only string with underscore
 
 function GET_VALUE {
     < "$JSON_FILE" jq -r --arg target "$1" '.[$target]' \
-        | sed 's/^null$//g;s/^\s+$//g'
+        | sed 's/^\(null\|\s*\)$/_/g'
 }
 
 pbp1a=$(GET_VALUE "pbp1a")
