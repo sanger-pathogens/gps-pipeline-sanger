@@ -33,8 +33,8 @@ OUTPUT_FILE = sys.argv[4]
 
 
 def main():
-    ariba_targets = set(pd.read_csv(ARIBA_METADATA, sep='\t')['target'].unique())
-    df_resistance_to_mic = pd.read_csv(RESISTANCE_TO_MIC, sep='\t', index_col='drug')
+    ariba_targets = set(pd.read_csv(ARIBA_METADATA, sep='\t', keep_default_na=False)['target'].unique())
+    df_resistance_to_mic = pd.read_csv(RESISTANCE_TO_MIC, sep='\t', index_col='drug', keep_default_na=False)
 
     output_columns = get_output_columns(COLUMNS_BY_CATEGORY, ariba_targets)
     df_output = get_df_output(INPUT_PATTERN, output_columns, df_resistance_to_mic)
@@ -82,7 +82,7 @@ def get_df_output(input_pattern, output_columns, df_resistance_to_mic):
     dfs = [df_manifest]
     reports = glob.glob(input_pattern)
     for report in reports:
-        df = pd.read_csv(report, dtype=str)
+        df = pd.read_csv(report, dtype=str, keep_default_na=False)
         dfs.append(df)
     df_output = pd.concat(dfs, ignore_index=True).sort_values(by=['Sample_ID'])
 
@@ -90,6 +90,9 @@ def get_df_output(input_pattern, output_columns, df_resistance_to_mic):
     df_output = df_output[output_columns]
 
     df_output = add_inferred_mic(df_output, df_resistance_to_mic)
+
+    # Missing in silico results in Overall QC pass samples means failure in corresponding typing module
+    df_output.loc[df_output["Overall_QC"] == "PASS"] = df_output.loc[df_output["Overall_QC"] == "PASS"].fillna(value="MODULE FAILURE")
 
     return df_output
 
@@ -102,7 +105,7 @@ def add_inferred_mic(df_output, df_resistance_to_mic):
 
         if res_col_name in df_output:
             res_col_index = df_output.columns.get_loc(res_col_name)
-            mic_series = df_output[res_col_name].map(resistance_to_mic, na_action='ignore')
+            mic_series = df_output[res_col_name].map(resistance_to_mic, na_action='ignore').fillna(value="_")
             df_output.insert(res_col_index, f'{drug}_MIC', mic_series)
 
     return df_output

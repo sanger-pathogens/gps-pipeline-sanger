@@ -31,7 +31,7 @@ def main():
 
 # Saving all targets in metadata as key and their information as values
 def get_target():
-    df_metadata = pd.read_csv(METADATA_PATH, sep='\t')
+    df_metadata = pd.read_csv(METADATA_PATH, sep='\t', keep_default_na=False)
     target_dict = defaultdict(lambda: defaultdict(set))
 
     # Add ref_group based on ref_name to the Dataframe
@@ -71,7 +71,7 @@ def get_target():
 
 # Finding hits in ARIBA results based on targets_dict and save hits to hits_dict
 def find_hit(target_dict):
-    df_report = pd.read_csv(DEBUG_REPORT_PATH, sep="\t")
+    df_report = pd.read_csv(DEBUG_REPORT_PATH, sep="\t", keep_default_na=False)
 
     # Remove rows with non-numeric value in ref_base_assembled, ref_len, or ctg_cov
     df_report['ref_base_assembled'] = pd.to_numeric(df_report['ref_base_assembled'], errors='coerce')
