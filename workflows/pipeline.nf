@@ -10,6 +10,9 @@ include { MLST } from "$projectDir/modules/mlst"
 include { PBP_RESISTANCE; PARSE_PBP_RESISTANCE; GET_ARIBA_DB; OTHER_RESISTANCE; PARSE_OTHER_RESISTANCE } from "$projectDir/modules/amr"
 include { GENERATE_SAMPLE_REPORT; GENERATE_OVERALL_REPORT } from "$projectDir/modules/output"
 
+// Import subworkflows
+include { MIXED_INPUT } from "$projectDir/assorted-sub-workflows/mixed_input/mixed_input"
+
 // Main pipeline workflow
 workflow PIPELINE {
     main:
@@ -29,8 +32,17 @@ workflow PIPELINE {
     // Get path to ARIBA database, generate from reference sequences and metadata if ncessary
     GET_ARIBA_DB(params.ariba_ref, params.ariba_metadata, params.db)
 
+    // Obtain input from manifests and iRODS params
+    MIXED_INPUT
+    | map { meta, R1, R2 -> [meta.ID, [R1, R2]] }
+    | set { raw_read_pairs_ch }
+
     // Get read pairs into Channel raw_read_pairs_ch
-    raw_read_pairs_ch = Channel.fromFilePairs("$params.reads/*_{,R}{1,2}{,_001}.{fq,fastq}{,.gz}", checkIfExists: true)
+    if (params.reads) {
+        Channel.fromFilePairs("$params.reads/*_{,R}{1,2}{,_001}.{fq,fastq}{,.gz}", checkIfExists: true)
+        | mix(raw_read_pairs_ch)
+        | set { raw_read_pairs_ch }
+    }
 
     // Basic input files validation
     // Output into Channel FILE_VALIDATION.out.result
