@@ -210,6 +210,7 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
     | `standard`<br> (Default) | Docker is used as the container engine. <br> Processes are executed locally. |
     | `singularity` |  Singularity is used as the container engine. <br> Processes are executed locally. |
     | `lsf` | **The pipeline should be launched from a LSF cluster head node with this profile.** <br>Singularity is used as the container engine. <br> Processes are submitted to your LSF cluster via `bsub` by the pipeline. <br> (Tested on Wellcome Sanger Institute farm5 LSF cluster only) <br> (Option `--kraken2_memory_mapping` default change to `false`.) |
+    | `sanger` | **Only required for Sanger HPC cluster.** <br>Intended to be used in combination with `lsf` profile. |
 
 ## Resume
 > [!TIP]
