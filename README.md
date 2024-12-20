@@ -153,17 +153,22 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 > [!WARNING]
 > - Docker or Singularity must be running
 > - An Internet connection is required
-1. Clone the repository (if Git is installed on your system)
+1. Clone the repository (`git` is installed on your system)
     ```
-    git clone https://github.com/GlobalPneumoSeq/gps-pipeline.git
+    git clone --recurse-submodules https://github.com/GlobalPneumoSeq/gps-pipeline.git
     ```
-    or 
+    > Note: The pipeline depends on git submodules. If you don't clone with `--recurse-submodules`, you can correct this with `git submodule update --init`.
     
-    Download and unzip/extract the [latest release](https://github.com/GlobalPneumoSeq/gps-pipeline/releases)
+    OR
+    
+    - Download and unzip/extract the [latest release](https://github.com/GlobalPneumoSeq/gps-pipeline/releases).
+    - Click [here](./assorted-sub-workflows) and download the source code (`Code -> Download Zip`). Unzip/extract the code in the same directory as the gps-pipeline root.
+
 2. Go into the local directory of the pipeline and it is ready to use without installation (the directory name might be different)
     ```
     cd gps-pipeline
     ```
+
 3. (Optional) You could perform an initialisation to download all required additional files and container images, so the pipeline can be used at any time with or without the Internet afterwards.
     - Using Docker as the container engine
         ```
