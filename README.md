@@ -508,13 +508,13 @@ This project uses open-source components. You can find the homepage or source co
 - License (GPL-3.0): https://github.com/tseemann/shovill/blob/master/LICENSE
 - This tool is used in `ASSEMBLY_SHOVILL` process of the `assembly.nf` module
 
-[SPN-PBP-AMR](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/antimicrobial-resistance-prediction/spn-pbp-amr)
+[SPN-PBP-AMR](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/antimicrobial-resistance-prediction/spn-pbp-amr) (CDC PBP AMR Predictor)
 - [Pathogenwatch](https://pathogen.watch/) ([@pathogenwatch-oss](https://github.com/pathogenwatch-oss))
 - License (MIT): https://github.com/pathogenwatch-oss/spn-resistance-pbp/blob/main/LICENSE
 - This is a modified version of [AMR predictor](https://github.com/BenJamesMetcalf/Spn_Scripts_Reference) by Ben Metcalf ([@BenJamesMetcalf](https://github.com/BenJamesMetcalf)) at the Centre for Disease Control (CDC)
-- This project uses a Docker image of a [fork](https://github.com/sanger-bentley-group/spn-pbp-amr)
+- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/spn-pbp-amr)
   - The fork changes the Docker image from a Docker executable image to a Docker environment for Nextflow integration
-  - The Docker image provides the containerised environment with SPN-PBP-MAR for `PBP_RESISTANCE` process of the `amr.nf` module 
+  - The Docker image provides the containerised environment with SPN-PBP-AMR for `PBP_RESISTANCE` process of the `amr.nf` module 
 
 [Unicycler](https://github.com/rrwick/Unicycler)
 - **Wick RR, Judd LM, Gorrie CL, Holt KE**. Unicycler: resolving bacterial genome assemblies from short and long sequencing reads. *PLoS Comput Biol* 2017.
