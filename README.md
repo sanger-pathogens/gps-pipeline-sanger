@@ -266,7 +266,7 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 ## Serotype
 | Option | Values | Description |
 | --- | ---| --- |
-| `--seroba_db_remote` | Any valid URL to a SeroBA release in `.tar.gz` or `.tgz` format<br />(Default: [SeroBA v1.0.7](https://github.com/sanger-bentley-group/seroba/archive/refs/tags/v1.0.7.tar.gz))| URL to a SeroBA release. |
+| `--seroba_db_remote` | Any valid URL to a SeroBA release in `.tar.gz` or `.tgz` format<br />(Default: [SeroBA v2.0.3](https://github.com/GlobalPneumoSeq/seroba/archive/refs/tags/v2.0.3.tar.gz))| URL to a SeroBA release. |
 | `--seroba_kmer` | Any integer value<br />(Default: `71`) | Kmer size for creating the KMC database of SeroBA. |
 
 ## Lineage
@@ -492,7 +492,7 @@ This project uses open-source components. You can find the homepage or source co
 [SeroBA](https://sanger-pathogens.github.io/seroba/)
 - **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
 - License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
-- This project uses a Docker image of a [fork](https://github.com/sanger-bentley-group/seroba)
+- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
   - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
   - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
 
