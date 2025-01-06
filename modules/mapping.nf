@@ -67,11 +67,13 @@ process SAM_TO_SORTED_BAM {
 
     script:
     sorted_bam="${sample_id}_mapped_sorted.bam"
+    max_thread="8"
     """
     SAM="$sam"
     BAM="mapped.bam"
     SORTED_BAM="$sorted_bam"
     LITE="$lite"
+    MAX_THREAD="$max_thread"
 
     source convert_sam_to_sorted_bam.sh
     source get_ref_coverage.sh
