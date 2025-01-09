@@ -266,7 +266,7 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 ## Serotype
 | Option | Values | Description |
 | --- | ---| --- |
-| `--seroba_db_remote` | Any valid URL to a SeroBA release in `.tar.gz` or `.tgz` format<br />(Default: [SeroBA v1.0.7](https://github.com/sanger-bentley-group/seroba/archive/refs/tags/v1.0.7.tar.gz))| URL to a SeroBA release. |
+| `--seroba_db_remote` | Any valid URL to a SeroBA release in `.tar.gz` or `.tgz` format<br />(Default: [SeroBA v2.0.4](https://github.com/GlobalPneumoSeq/seroba/archive/refs/tags/v2.0.4.tar.gz))| URL to a SeroBA release. |
 | `--seroba_kmer` | Any integer value<br />(Default: `71`) | Kmer size for creating the KMC database of SeroBA. |
 
 ## Lineage
@@ -492,7 +492,7 @@ This project uses open-source components. You can find the homepage or source co
 [SeroBA](https://sanger-pathogens.github.io/seroba/)
 - **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
 - License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
-- This project uses a Docker image of a [fork](https://github.com/sanger-bentley-group/seroba)
+- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
   - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
   - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
 
@@ -508,13 +508,13 @@ This project uses open-source components. You can find the homepage or source co
 - License (GPL-3.0): https://github.com/tseemann/shovill/blob/master/LICENSE
 - This tool is used in `ASSEMBLY_SHOVILL` process of the `assembly.nf` module
 
-[SPN-PBP-AMR](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/antimicrobial-resistance-prediction/spn-pbp-amr)
+[SPN-PBP-AMR](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/antimicrobial-resistance-prediction/spn-pbp-amr) (CDC PBP AMR Predictor)
 - [Pathogenwatch](https://pathogen.watch/) ([@pathogenwatch-oss](https://github.com/pathogenwatch-oss))
 - License (MIT): https://github.com/pathogenwatch-oss/spn-resistance-pbp/blob/main/LICENSE
 - This is a modified version of [AMR predictor](https://github.com/BenJamesMetcalf/Spn_Scripts_Reference) by Ben Metcalf ([@BenJamesMetcalf](https://github.com/BenJamesMetcalf)) at the Centre for Disease Control (CDC)
-- This project uses a Docker image of a [fork](https://github.com/sanger-bentley-group/spn-pbp-amr)
+- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/spn-pbp-amr)
   - The fork changes the Docker image from a Docker executable image to a Docker environment for Nextflow integration
-  - The Docker image provides the containerised environment with SPN-PBP-MAR for `PBP_RESISTANCE` process of the `amr.nf` module 
+  - The Docker image provides the containerised environment with SPN-PBP-AMR for `PBP_RESISTANCE` process of the `amr.nf` module 
 
 [Unicycler](https://github.com/rrwick/Unicycler)
 - **Wick RR, Judd LM, Gorrie CL, Holt KE**. Unicycler: resolving bacterial genome assemblies from short and long sequencing reads. *PLoS Comput Biol* 2017.
