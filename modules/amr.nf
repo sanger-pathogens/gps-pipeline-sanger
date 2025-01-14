@@ -1,4 +1,5 @@
 // Run PBP AMR predictor to assign pbp genes and estimate samples' MIC (minimum inhibitory concentration) for 6 Beta-lactam antibiotics
+// The process will fail if an empty output is generated
 process PBP_RESISTANCE {
     label 'spn_pbp_amr_container'
     label 'farm_low'
@@ -15,6 +16,7 @@ process PBP_RESISTANCE {
     json='result.json'
     """
     spn_pbp_amr "$assembly" > "$json"
+    grep -q '[^[:space:]]' "$json" || exit 1
     """
 }
 
