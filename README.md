@@ -1,4 +1,4 @@
-# GPS Pipeline <!-- omit in toc -->
+# GPS Pipeline (Internal Use at Sanger) <!-- omit in toc -->
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-24.10.3-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
@@ -7,7 +7,7 @@
 
 The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials.
 
-The pipeline is designed to be easy to set up and use, and is suitable for use on local machines and high-performance computing (HPC) clusters alike. Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
+The pipeline is designed to be easy to set up and use, and is suitable for use on ~~local machines and~~ high-performance computing (HPC) clusters alike. Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
 
 The development of this pipeline is part of the GPS Project ([Global Pneumococcal Sequencing Project](https://www.pneumogen.net/gps/)). 
 
@@ -155,7 +155,7 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 > - An Internet connection is required
 1. Clone the repository (`git` must be installed on your system)
     ```
-    git clone --recurse-submodules https://github.com/GlobalPneumoSeq/gps-pipeline.git
+    git clone --recurse-submodules https://github.com/sanger-pathogens/gps-pipeline
     ```
     > Note: The pipeline depends on git submodules. If you don't clone with `--recurse-submodules`, you can correct this with `git submodule update --init`.
 
