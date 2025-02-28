@@ -34,6 +34,8 @@ skipValidationParams = [
     plexid: 'skip',
     target: 'skip',
     type: 'skip'
+    // reads is optional due to mixed input
+    reads: 'skip'
 ] 
 
 // Map of valid parameters and their value types
@@ -41,7 +43,6 @@ validParams = [
     help: 'boolean',
     init: 'boolean',
     version: 'boolean',
-    reads: 'path_exist',
     output: 'path',
     db: 'path',
     assembler: 'assembler',
