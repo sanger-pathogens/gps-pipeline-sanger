@@ -33,7 +33,7 @@ skipValidationParams = [
     laneid: 'skip',
     plexid: 'skip',
     target: 'skip',
-    type: 'skip'
+    type: 'skip',
     // reads is optional due to mixed input
     reads: 'skip'
 ] 
