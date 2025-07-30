@@ -451,10 +451,10 @@ process PYTHON_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(python3 --version | sed -r "s/.*\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(python3 --version | sed -r "s/^.*[[:space:]]//")
+    '''
 }
 
 process FASTP_VERSION {
@@ -464,10 +464,10 @@ process FASTP_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(fastp -v 2>&1 | sed -r "s/.*\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(fastp -v 2>&1 | sed -r "s/^.*[[:space:]]//")
+    '''
 }
 
 process UNICYCLER_VERSION {
@@ -477,11 +477,11 @@ process UNICYCLER_VERSION {
     output:
     tuple env(VERSION), env(THREAD)
 
-    shell:
-    $/
-    VERSION=$(unicycler --version | sed -r "s/.*\sv(.+)/\1/")
+    script:
+    '''
+    VERSION=$(unicycler --version | sed -r "s/^.*[[:space:]]v//")
     THREAD=$(nproc)
-    /$
+    '''
 }
 
 process SHOVILL_VERSION {
@@ -491,11 +491,11 @@ process SHOVILL_VERSION {
     output:
     tuple env(VERSION), env(THREAD)
 
-    shell:
-    $/
-    VERSION=$(shovill -v | sed -r "s/.*\s(.+)/\1/")
+    script:
+    '''
+    VERSION=$(shovill -v | sed -r "s/^.*[[:space:]]//")
     THREAD=$(nproc)
-    /$
+    '''
 }
 
 process QUAST_VERSION {
@@ -505,10 +505,10 @@ process QUAST_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(quast.py -v | sed -r "s/.*\sv(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(quast.py -v | sed -r "s/^.*[[:space:]]v//")
+    '''
 }
 
 process BWA_VERSION {
@@ -518,10 +518,10 @@ process BWA_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(bwa 2>&1 | grep Version | sed -r "s/.*:\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(bwa 2>&1 | grep Version | sed -r "s/^.*:[[:space:]]//")
+    '''
 }
 
 process SAMTOOLS_VERSION {
@@ -531,10 +531,10 @@ process SAMTOOLS_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(samtools 2>&1 | grep Version | sed -r "s/.*:\s(.+)\s\(.+/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(samtools 2>&1 | grep Version | sed -r -e "s/^.*:[[:space:]]//" -e "s/[[:space:]].+$//")
+    '''
 }
 
 process BCFTOOLS_VERSION {
@@ -544,10 +544,10 @@ process BCFTOOLS_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(bcftools 2>&1 | grep Version | sed -r "s/.*:\s(.+)\s\(.+/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(bcftools 2>&1 | grep Version | sed -r -e "s/^.*:[[:space:]]//" -e "s/[[:space:]].+$//")
+    '''
 }
 
 process POPPUNK_VERSION {
@@ -557,10 +557,10 @@ process POPPUNK_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(poppunk --version | sed -r "s/.*\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(poppunk --version | sed -r "s/^.*[[:space:]]//")
+    '''
 }
 
 process MLST_VERSION {
@@ -570,10 +570,10 @@ process MLST_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(mlst -v | sed -r "s/.*\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(mlst -v | sed -r "s/.*[[:space:]]//")
+    '''
 }
 
 process KRAKEN2_VERSION {
@@ -583,10 +583,10 @@ process KRAKEN2_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(kraken2 -v | grep version | sed -r "s/.*\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(kraken2 -v | grep version | sed -r "s/.*[[:space:]]//")
+    '''
 }
 
 process SEROBA_VERSION {
@@ -596,10 +596,10 @@ process SEROBA_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
+    script:
+    '''
     VERSION=$(seroba version)
-    /$
+    '''
 }
 
 process ARIBA_VERSION {
@@ -609,8 +609,8 @@ process ARIBA_VERSION {
     output:
     env VERSION
 
-    shell:
-    $/
-    VERSION=$(ariba version | grep ARIBA | sed -r "s/.*:\s(.+)/\1/")
-    /$
+    script:
+    '''
+    VERSION=$(ariba version | grep ARIBA | sed -r "s/.*:[[:space:]]//")
+    '''
 }
