@@ -1,6 +1,6 @@
 # GPS Pipeline <!-- omit in toc -->
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-24.10.3-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.04.6-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
@@ -62,7 +62,7 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
 ### Software
 - A POSIX-compatible operating system (e.g. Linux, macOS, Windows with [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) with Bash 3.2 or later
     - [Installation guide for WSL on Windows](https://learn.microsoft.com/en-us/windows/wsl/install) by Microsoft
-- Java 11 or later (up to 22) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
+- Java 17 or later (up to 24) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
     - [Installation guide for OpenJDK](https://www.freecodecamp.org/news/install-openjdk-free-java-multi-os-guide/) by freeCodeCamp
 - [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/)
     - Installation guides:
