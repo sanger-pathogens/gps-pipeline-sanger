@@ -28,4 +28,23 @@ process GET_BAKTA_DB {
 
 // Run Bakta to get annotation
 // Publish the annotation to ${params.output}/annotations directory based on ${params.file_publish}
-// TO-DO
+process ANNOTATE {
+    label 'bakta_container'
+    label 'farm_high'
+    
+    tag "$sample_id"
+
+    publishDir "${params.output}/annotations", mode: "${params.file_publish}"
+
+    input:
+    path bakta_db
+    tuple val(sample_id), path(assembly)
+    output:
+    tuple val(sample_id), path(gff)
+
+    script:
+    gff="${sample_id}.gff3"
+    """
+    bakta --db "$bakta_db" --prefix "$sample_id" --skip-plot "$assembly"
+    """
+}

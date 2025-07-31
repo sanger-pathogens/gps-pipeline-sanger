@@ -8,7 +8,7 @@ include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS; LINEAGE } from "$projectDir/
 include { GET_SEROBA_DB; SEROTYPE } from "$projectDir/modules/serotype"
 include { MLST } from "$projectDir/modules/mlst"
 include { PBP_RESISTANCE; PARSE_PBP_RESISTANCE; GET_ARIBA_DB; OTHER_RESISTANCE; PARSE_OTHER_RESISTANCE } from "$projectDir/modules/amr"
-include { GET_BAKTA_DB } from "$projectDir/modules/annotation"
+include { GET_BAKTA_DB; ANNOTATE } from "$projectDir/modules/annotation"
 include { GENERATE_SAMPLE_REPORT; GENERATE_OVERALL_REPORT } from "$projectDir/modules/output"
 
 // Main pipeline workflow
@@ -137,6 +137,12 @@ workflow PIPELINE {
     OVERALL_QC_PASSED_ASSEMBLIES_ch = OVERALL_QC.out.result.join(ASSEMBLY_ch, failOnDuplicate: true)
                             .filter { it[1] == 'PASS' }
                             .map { it[0, 2..-1] }
+
+    // From Channel OVERALL_QC_PASSED_ASSEMBLIES_ch, annotate samples passed overall QC
+    // Hardlink (default) the annotations to $params.output directory
+    if (params.annotation) {
+        ANNOTATE(GET_BAKTA_DB.out.path, OVERALL_QC_PASSED_ASSEMBLIES_ch)
+    }
 
     // From Channel OVERALL_QC_PASSED_ASSEMBLIES_ch, generate PopPUNK query file containing assemblies of samples passed overall QC
     POPPUNK_QFILE = OVERALL_QC_PASSED_ASSEMBLIES_ch
