@@ -71,5 +71,6 @@ jq -n \
     --argjson kraken2_db "$(add_url_db "${KRAKEN2_DB_PATH}/${KRAKEN2_JSON}")" \
     --argjson poppunnk_db "$(add_url_db "${POPPUNK_DB_PATH}/${POPPUNK_JSON}")" \
     --argjson poppunk_ext "$(add_url_db "${POPPUNK_EXT_PATH}/${POPPUNK_EXT_JSON}")" \
+    --argjson bakta_db "$(add_url_db "${BAKTA_DB_PATH}/${BAKTA_JSON}")" \
     --argjson resistance_to_mic "$(add_resistance_to_mic)"\
     '$ARGS.named' > "$JSON_FILE"

@@ -197,6 +197,7 @@ workflow PIPELINE {
                         .merge(GET_SEROBA_DB.out.path.map { [["seroba_db_path", it]] })
                         .merge(GET_POPPUNK_DB.out.path.map { [["poppunk_db_path", it]] })
                         .merge(GET_POPPUNK_EXT_CLUSTERS.out.path.map { [["poppunk_ext_path", it]] })
+                        .merge(params.annotation ? GET_BAKTA_DB.out.path.map { [["bakta_db_path", it]] } : channel.of([["bakta_db_path", "$params.db/bakta"]]) )
                         // Save key-value tuples into a map
                         .map { it.collectEntries() }
 
