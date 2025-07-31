@@ -10,7 +10,7 @@ validParams = [
     assembler: 'assembler',
     min_contig_length: 'int',
     assembler_thread: 'int',
-    assembly_publish: 'publish_mode',
+    file_publish: 'publish_mode',
     seroba_db_remote: 'url_targz',
     seroba_kmer: 'int',
     kraken2_db_remote: 'url_targz',

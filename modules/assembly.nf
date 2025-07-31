@@ -1,12 +1,12 @@
 // Run Unicycler to get assembly
-// Return sample_id and assembly, and publish the assembly to ${params.output}/assemblies directory based on ${params.assembly_publish}
+// Return sample_id and assembly, and publish the assembly to ${params.output}/assemblies directory based on ${params.file_publish}
 process ASSEMBLY_UNICYCLER {
     label 'unicycler_container'
     label 'farm_high'
 
     tag "$sample_id"
 
-    publishDir "${params.output}/assemblies", mode: "${params.assembly_publish}"
+    publishDir "${params.output}/assemblies", mode: "${params.file_publish}"
 
     input:
     tuple val(sample_id), path(read1), path(read2), path(unpaired)
@@ -32,14 +32,14 @@ process ASSEMBLY_UNICYCLER {
 }
 
 // Run Shovill to get assembly
-// Return sample_id and assembly, and publish the assembly to ${params.output}/assemblies directory based on ${params.assembly_publish}
+// Return sample_id and assembly, and publish the assembly to ${params.output}/assemblies directory based on ${params.file_publish}
 process ASSEMBLY_SHOVILL {
     label 'shovill_container'
     label 'farm_high'
 
     tag "$sample_id"
 
-    publishDir "${params.output}/assemblies", mode: "${params.assembly_publish}"
+    publishDir "${params.output}/assemblies", mode: "${params.file_publish}"
 
     input:
     tuple val(sample_id), path(read1), path(read2), path(unpaired)
