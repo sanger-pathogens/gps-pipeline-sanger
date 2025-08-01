@@ -41,6 +41,7 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
   - [Serotype](#serotype)
   - [Lineage](#lineage)
   - [Other AMR](#other-amr)
+  - [Annotation](#annotation)
   - [Singularity](#singularity)
   - [Experimental](#experimental)
 - [Output](#output)
@@ -508,19 +509,19 @@ This project uses open-source components. You can find the homepage or source co
 - License (GPL-2.0): https://github.com/ablab/quast/blob/master/LICENSE.txt
 - This tool is used in `ASSEMBLY_ASSESS` process of the `assembly.nf` module
 
-[SeroBA](https://sanger-pathogens.github.io/seroba/)
-- **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
-- License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
-- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
-  - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
-  - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
-
 [resistanceDatabase](https://github.com/kumarnaren/resistanceDatabase)
 - Narender Kumar ([@kumarnaren](https://github.com/kumarnaren))
 - License (GPL-3.0): https://github.com/kumarnaren/resistanceDatabase/blob/main/LICENSE
 - `sequences.fasta` is renamed to `ariba_ref_sequences.fasta` and modified
 - `metadata.tsv` is renamed to `ariba_metadata.tsv` and modified
 - The files are used as the default inputs of `GET_ARIBA_DB` process of the `amr.nf` module
+
+[SeroBA](https://sanger-pathogens.github.io/seroba/)
+- **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
+- License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
+- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
+  - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
+  - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
 
 [Shovill](https://github.com/tseemann/shovill)
 - Torsten Seemann ([@tseemann](https://github.com/tseemann))
