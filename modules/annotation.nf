@@ -45,6 +45,6 @@ process ANNOTATE {
     script:
     gff="${sample_id}.gff3"
     """
-    bakta --db "$bakta_db" --prefix "$sample_id" --skip-plot "$assembly"
+    bakta --db "$bakta_db" --prefix "$sample_id" --skip-plot --genus Streptococcus --species pneumoniae "$assembly"
     """
 }
