@@ -243,6 +243,7 @@ process PARSE {
         |╟───────────────┬─────────────────────────────────────────────────────────────────────────────────╢
         |${dbTextRow('Source', json.bakta_db.url)}
         |${dbTextRow('Saved', json.bakta_db.save_time)}
+        |${dbTextRow('Version', json.bakta_db.db_version)}
         |╚═══════════════╧═════════════════════════════════════════════════════════════════════════════════╝
         |""".stripMargin()
 

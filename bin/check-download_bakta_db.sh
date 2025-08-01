@@ -20,9 +20,12 @@ if  [ ! -f "${DB_LOCAL}/${JSON_FILE}" ] || \
 
     ( cd "${DB_LOCAL}" && find . -type f -not -name "${CHECKSUM_FILE}" -exec md5sum "{}" + ) > "${DB_LOCAL}/${CHECKSUM_FILE}"
 
+    DB_VERSION=$(< ${DB_LOCAL}/version.json jq -r '"\(.major).\(.minor) \(.type)"')
+
     jq -n \
         --arg url "$DB_REMOTE" \
+        --arg db_version "$DB_VERSION" \
         --arg save_time "$(date +"%Y-%m-%d %H:%M:%S %Z")" \
-        '{"url" : $url, "save_time": $save_time}' > "${DB_LOCAL}/${JSON_FILE}"
+        '{"url" : $url, "db_version": $db_version, "save_time": $save_time}' > "${DB_LOCAL}/${JSON_FILE}"
 
 fi
