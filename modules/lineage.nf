@@ -45,10 +45,12 @@ process GET_POPPUNK_EXT_CLUSTERS {
     script:
     poppunk_ext="${db}/poppunk_ext"
     json='done_poppunk_ext.json'
+    checksum='checksum.md5'
     """
     EXT_CLUSTERS_REMOTE="$ext_clusters_remote"
     EXT_CLUSTERS_LOCAL="$poppunk_ext"
     JSON_FILE="$json"
+    CHECKSUM_FILE='$checksum'
 
     source check-download_poppunk_ext_clusters.sh    
     """
