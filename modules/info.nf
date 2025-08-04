@@ -34,6 +34,7 @@ process DATABASES {
     path seroba_db_path
     path poppunk_db_path
     path poppunk_ext_path
+    path bakta_db_path
     path resistance_to_mic
 
     output:
@@ -47,6 +48,7 @@ process DATABASES {
     kraken2_json='done_kraken.json'
     poppunk_json='done_poppunk.json'
     poppunk_ext_json='done_poppunk_ext.json'
+    bakta_json='done_bakta.json'
     """
     BWA_DB_PATH="$bwa_db_path"
     BWA_JSON="$bwa_json"
@@ -60,6 +62,8 @@ process DATABASES {
     POPPUNK_JSON="$poppunk_json"
     POPPUNK_EXT_PATH="$poppunk_ext_path"
     POPPUNK_EXT_JSON="$poppunk_ext_json"
+    BAKTA_DB_PATH="$bakta_db_path"
+    BAKTA_JSON="$bakta_json"
     RESISTANCE_TO_MIC="$resistance_to_mic"
     JSON_FILE="$json"
 
@@ -86,6 +90,7 @@ process TOOLS {
     val kraken2_version
     val seroba_version
     val ariba_version
+    val bakta_version
 
     output:
     path(json), emit: json
@@ -108,6 +113,7 @@ process TOOLS {
     KRAKEN2_VERSION="$kraken2_version"
     SEROBA_VERSION="$seroba_version"
     ARIBA_VERSION="$ariba_version"
+    BAKTA_VERSION="$bakta_version"
     JSON_FILE="$json"
                 
     source save_tools_info.sh
@@ -232,6 +238,12 @@ process PARSE {
         |╟───────────────┬─────────────────────────────────────────────────────────────────────────────────╢
         |${dbTextRow('Table', json.resistance_to_mic.table)}
         |${dbTextRow('Table MD5', json.resistance_to_mic.table_md5)}
+        |╠═══════════════╧═════════════════════════════════════════════════════════════════════════════════╣
+        |║ Bakta database                                                                                  ║
+        |╟───────────────┬─────────────────────────────────────────────────────────────────────────────────╢
+        |${dbTextRow('Source', json.bakta_db.url)}
+        |${dbTextRow('Saved', json.bakta_db.save_time)}
+        |${dbTextRow('Version', json.bakta_db.db_version)}
         |╚═══════════════╧═════════════════════════════════════════════════════════════════════════════════╝
         |""".stripMargin()
 
@@ -266,6 +278,7 @@ process PARSE {
         |${toolTextRow('mlst', 'mlst')}
         |${toolTextRow('Kraken 2', 'kraken2')}
         |${toolTextRow('SeroBA', 'seroba')}
+        |${toolTextRow('Bakta', 'bakta')}
         |╚════════════════════════════════╧════════════════════════════════════════════════════════════════╝
         |""".stripMargin()
 
@@ -301,6 +314,7 @@ process PARSE {
         |${imageTextRow('mlst', 'mlst')}
         |${imageTextRow('Kraken 2', 'kraken2')}
         |${imageTextRow('SeroBA', 'seroba')}
+        |${imageTextRow('Bakta', 'bakta')}
         |╚════════════════════════════════╧════════════════════════════════════════════════════════════════╝
         |""".stripMargin()
 }
@@ -612,5 +626,18 @@ process ARIBA_VERSION {
     script:
     '''
     VERSION=$(ariba version | grep ARIBA | sed -r "s/.*:[[:space:]]//")
+    '''
+}
+
+process BAKTA_VERSION {
+    label 'bakta_container'
+    label 'farm_low'
+
+    output:
+    env VERSION
+
+    script:
+    '''
+    VERSION=$(bakta --version | sed -r "s/^.*[[:space:]]//")
     '''
 }

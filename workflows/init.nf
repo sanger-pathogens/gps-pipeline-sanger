@@ -5,6 +5,7 @@ include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS } from "$projectDir/modules/l
 include { GET_SEROBA_DB } from "$projectDir/modules/serotype"
 include { GET_DOCKER_COMPOSE; PULL_IMAGES } from "$projectDir/modules/docker"
 include { GET_ARIBA_DB } from "$projectDir/modules/amr"
+include { GET_BAKTA_DB } from "$projectDir/modules/annotation"
 
 // Alternative workflow for initialisation only
 workflow INIT {
@@ -20,9 +21,14 @@ workflow INIT {
     // Check SeroBA Databases, download and rebuild if necessary
     GET_SEROBA_DB(params.seroba_db_remote, params.db, params.seroba_kmer)
 
-    // Check to PopPUNK Database and External Clusters, download if necessary
+    // Check PopPUNK Database and External Clusters, download if necessary
     GET_POPPUNK_DB(params.poppunk_db_remote, params.db)
     GET_POPPUNK_EXT_CLUSTERS(params.poppunk_ext_remote, params.db)
+
+    // Check Bakta database, download if necessary
+    if (params.annotation) {
+        GET_BAKTA_DB(params.bakta_db_remote, params.db)
+    }
 
     // Pull all Docker images used in the workflow if using Docker
     if (workflow.containerEngine === 'docker') {

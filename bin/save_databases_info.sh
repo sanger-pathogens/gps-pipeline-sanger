@@ -58,6 +58,20 @@ add_url_db () {
     jq -n --arg url "$URL" --arg save_time "$SAVE_TIME" '. = {"url": $url, "save_time": $save_time}'
 }
 
+add_url_db_versioned () {
+    DB_JSON="$1"
+    if [ -f "$DB_JSON" ]; then
+        URL=$(jq -r .url "$DB_JSON")
+        SAVE_TIME=$(jq -r .save_time "$DB_JSON")
+        DB_VERSION=$(jq -r .db_version "$DB_JSON")
+    else
+        URL="Not yet downloaded"
+        SAVE_TIME="Not yet downloaded"
+        DB_VERSION="Not yet downloaded"
+    fi
+    jq -n --arg url "$URL" --arg save_time "$SAVE_TIME" --arg db_version "$DB_VERSION" '. = {"url": $url, "save_time": $save_time, "db_version": $db_version}'
+}
+
 add_resistance_to_mic () {
     TABLE="$RESISTANCE_TO_MIC"
     TABLE_MD5=$(md5sum "$RESISTANCE_TO_MIC" | awk '{ print $1 }')
@@ -71,5 +85,6 @@ jq -n \
     --argjson kraken2_db "$(add_url_db "${KRAKEN2_DB_PATH}/${KRAKEN2_JSON}")" \
     --argjson poppunnk_db "$(add_url_db "${POPPUNK_DB_PATH}/${POPPUNK_JSON}")" \
     --argjson poppunk_ext "$(add_url_db "${POPPUNK_EXT_PATH}/${POPPUNK_EXT_JSON}")" \
+    --argjson bakta_db "$(add_url_db_versioned "${BAKTA_DB_PATH}/${BAKTA_JSON}")" \
     --argjson resistance_to_mic "$(add_resistance_to_mic)"\
     '$ARGS.named' > "$JSON_FILE"

@@ -3,13 +3,14 @@ validParams = [
     help: 'boolean',
     init: 'boolean',
     version: 'boolean',
+    annotation: 'boolean',
     reads: 'path_exist',
     output: 'path',
     db: 'path',
     assembler: 'assembler',
     min_contig_length: 'int',
     assembler_thread: 'int',
-    assembly_publish: 'publish_mode',
+    file_publish: 'publish_mode',
     seroba_db_remote: 'url_targz',
     seroba_kmer: 'int',
     kraken2_db_remote: 'url_targz',
@@ -17,6 +18,7 @@ validParams = [
     ref_genome: 'path_fasta',
     poppunk_db_remote: 'url_targz',
     poppunk_ext_remote: 'url_csv',
+    bakta_db_remote: 'url_tarxz',
     spneumo_percentage: 'int_float',
     non_strep_percentage: 'int_float',
     ref_coverage: 'int_float',
@@ -151,6 +153,12 @@ void validate(Map params) {
             case 'url_targz':
                 if (!(value ==~ /^(https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)\.(tar\.gz|tgz)$/)) {
                     invalidValues[key] = [value, 'URL that points a .tar.gz file (valid URL ending with .tar.gz or .tgz)']
+                }
+                break
+            
+            case 'url_tarxz':
+                if (!(value ==~ /^(https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)\.(tar\.xz)$/)) {
+                    invalidValues[key] = [value, 'URL that points a .tar.xz file (valid URL ending with .tar.xz)']
                 }
                 break
 

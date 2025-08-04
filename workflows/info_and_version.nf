@@ -1,4 +1,4 @@
-include { IMAGES; DATABASES; TOOLS; COMBINE_INFO; PARSE; PRINT; SAVE; PYTHON_VERSION; FASTP_VERSION; UNICYCLER_VERSION; SHOVILL_VERSION; QUAST_VERSION; BWA_VERSION; SAMTOOLS_VERSION; BCFTOOLS_VERSION; POPPUNK_VERSION; MLST_VERSION; KRAKEN2_VERSION; SEROBA_VERSION; ARIBA_VERSION } from "$projectDir/modules/info"
+include { IMAGES; DATABASES; TOOLS; COMBINE_INFO; PARSE; PRINT; SAVE; PYTHON_VERSION; FASTP_VERSION; UNICYCLER_VERSION; SHOVILL_VERSION; QUAST_VERSION; BWA_VERSION; SAMTOOLS_VERSION; BCFTOOLS_VERSION; POPPUNK_VERSION; MLST_VERSION; KRAKEN2_VERSION; SEROBA_VERSION; ARIBA_VERSION; BAKTA_VERSION} from "$projectDir/modules/info"
 
 // Alternative workflow that prints versions of pipeline and tools
 workflow PRINT_VERSION {
@@ -14,6 +14,7 @@ workflow PRINT_VERSION {
             "${params.db}/seroba",
             "${params.db}/poppunk",
             "${params.db}/poppunk_ext",
+            "${params.db}/bakta",
             resistance_to_mic,
             pipeline_version
         ) \
@@ -36,6 +37,7 @@ workflow SAVE_INFO {
             databases_info.seroba_db_path,
             databases_info.poppunk_db_path,
             databases_info.poppunk_ext_path,
+            databases_info.bakta_db_path,
             resistance_to_mic,
             pipeline_version
         ) \
@@ -52,6 +54,7 @@ workflow GET_VERSION {
         seroba_db_path
         poppunk_db_path
         poppunk_ext_path
+        bakta_db_path
         resistance_to_mic
         pipeline_version
 
@@ -69,6 +72,7 @@ workflow GET_VERSION {
             seroba_db_path,
             poppunk_db_path,
             poppunk_ext_path,
+            bakta_db_path,
             resistance_to_mic
         )
 
@@ -87,6 +91,7 @@ workflow GET_VERSION {
         KRAKEN2_VERSION()
         SEROBA_VERSION()
         ARIBA_VERSION()
+        BAKTA_VERSION()
 
         TOOLS(
             PYTHON_VERSION.out,
@@ -101,7 +106,8 @@ workflow GET_VERSION {
             MLST_VERSION.out,
             KRAKEN2_VERSION.out,
             SEROBA_VERSION.out,
-            ARIBA_VERSION.out
+            ARIBA_VERSION.out,
+            BAKTA_VERSION.out
         )
 
         COMBINE_INFO(

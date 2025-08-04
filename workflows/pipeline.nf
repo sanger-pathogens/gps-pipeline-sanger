@@ -8,6 +8,7 @@ include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS; LINEAGE } from "$projectDir/
 include { GET_SEROBA_DB; SEROTYPE } from "$projectDir/modules/serotype"
 include { MLST } from "$projectDir/modules/mlst"
 include { PBP_RESISTANCE; PARSE_PBP_RESISTANCE; GET_ARIBA_DB; OTHER_RESISTANCE; PARSE_OTHER_RESISTANCE } from "$projectDir/modules/amr"
+include { GET_BAKTA_DB; ANNOTATE } from "$projectDir/modules/annotation"
 include { GENERATE_SAMPLE_REPORT; GENERATE_OVERALL_REPORT } from "$projectDir/modules/output"
 
 // Main pipeline workflow
@@ -28,6 +29,11 @@ workflow PIPELINE {
 
     // Get path to ARIBA database, generate from reference sequences and metadata if ncessary
     GET_ARIBA_DB(params.ariba_ref, params.ariba_metadata, params.db)
+
+    // Get path fo Bakta database, download if necessary
+    if (params.annotation) {
+        GET_BAKTA_DB(params.bakta_db_remote, params.db)
+    }
 
     // Get read pairs into Channel raw_read_pairs_ch
     raw_read_pairs_ch = Channel.fromFilePairs("$params.reads/*_{,R}{1,2}{,_001}.{fq,fastq}{,.gz}", checkIfExists: true)
@@ -132,6 +138,12 @@ workflow PIPELINE {
                             .filter { it[1] == 'PASS' }
                             .map { it[0, 2..-1] }
 
+    // From Channel OVERALL_QC_PASSED_ASSEMBLIES_ch, annotate samples passed overall QC
+    // Hardlink (default) the annotations to $params.output directory
+    if (params.annotation) {
+        ANNOTATE(GET_BAKTA_DB.out.path, OVERALL_QC_PASSED_ASSEMBLIES_ch)
+    }
+
     // From Channel OVERALL_QC_PASSED_ASSEMBLIES_ch, generate PopPUNK query file containing assemblies of samples passed overall QC
     POPPUNK_QFILE = OVERALL_QC_PASSED_ASSEMBLIES_ch
                     .map { it.join'\t' }
@@ -185,6 +197,7 @@ workflow PIPELINE {
                         .merge(GET_SEROBA_DB.out.path.map { [["seroba_db_path", it]] })
                         .merge(GET_POPPUNK_DB.out.path.map { [["poppunk_db_path", it]] })
                         .merge(GET_POPPUNK_EXT_CLUSTERS.out.path.map { [["poppunk_ext_path", it]] })
+                        .merge(params.annotation ? GET_BAKTA_DB.out.path.map { [["bakta_db_path", it]] } : channel.of([["bakta_db_path", "$params.db/bakta"]]) )
                         // Save key-value tuples into a map
                         .map { it.collectEntries() }
 

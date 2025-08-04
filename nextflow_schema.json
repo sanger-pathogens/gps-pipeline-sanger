@@ -31,9 +31,9 @@
                     "description": "(Only required when Singularity is used) Path to the directory where Singularity images should be saved to.",
                     "format": "directory-path"
                 },
-                "assembly_publish": {
+                "file_publish": {
                     "type": "string",
-                    "description": "Method used by Nextflow to publish the generated assemblies.",
+                    "description": "Method used by Nextflow to publish the generated assemblies and annotations (if selected).",
                     "hidden": true,
                     "enum": [
                         "link",
@@ -46,7 +46,7 @@
                 "reads",
                 "output",
                 "db",
-                "assembly_publish"
+                "file_publish"
             ]
         },
         "qc_parameters": {
