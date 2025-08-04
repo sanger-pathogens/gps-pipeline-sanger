@@ -1,4 +1,5 @@
-# Check if all file exists and were obtained from the database at the specific link.
+# Check if database was obtained from the specific link.
+# Check if all files exist and data integrity is not compromised
 # If not: remove files in database directory, download, and unzip to database directory, also save metadata to JSON
 
 ZIPPED_DB='kraken2_db.tar.gz'
