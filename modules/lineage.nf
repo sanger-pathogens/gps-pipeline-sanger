@@ -16,10 +16,12 @@ process GET_POPPUNK_DB {
     script:
     poppunk_db="${db}/poppunk"
     json='done_poppunk.json'
+    checksum='checksum.md5'
     """
     DB_REMOTE="$db_remote"
     DB_LOCAL="$poppunk_db"
     JSON_FILE="$json"
+    CHECKSUM_FILE='$checksum'
 
     source check-download_poppunk_db.sh
     """
