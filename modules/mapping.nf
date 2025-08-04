@@ -16,11 +16,13 @@ process GET_REF_GENOME_BWA_DB {
     bwa_db="${db}/bwa"
     prefix='reference'
     json='done_bwa_db.json'
+    checksum='checksum.md5'
     """
     REFERENCE="$reference"
     DB_LOCAL="$bwa_db"
     PREFIX="$prefix"
     JSON_FILE="$json"
+    CHECKSUM_FILE='$checksum'
 
     source check-create_ref_genome_bwa_db.sh
     """
