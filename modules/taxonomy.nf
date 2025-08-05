@@ -15,10 +15,12 @@ process GET_KRAKEN2_DB {
     script:
     kraken2_db="${db}/kraken2"
     json='done_kraken.json'
+    checksum='checksum.md5'
     """
     DB_REMOTE="$remote"
     DB_LOCAL="$kraken2_db"
     JSON_FILE="$json"
+    CHECKSUM_FILE='$checksum'
 
     source check-download_kraken2_db.sh
     """
