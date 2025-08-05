@@ -1,6 +1,3 @@
-// Import for PARSE process
-import groovy.json.JsonSlurper
-
 // Extract containers information of workflow and save into a JSON file
 process IMAGES {
     label 'bash_container'
@@ -164,7 +161,7 @@ process PARSE {
     val nprocValue
 
     exec:
-    def jsonSlurper = new JsonSlurper()
+    def jsonSlurper = new groovy.json.JsonSlurper()
 
     def json = jsonSlurper.parse(new File("${json_file}"))
 
