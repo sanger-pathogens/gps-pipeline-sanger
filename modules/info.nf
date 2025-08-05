@@ -461,7 +461,7 @@ process PYTHON_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -474,7 +474,7 @@ process FASTP_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -487,7 +487,7 @@ process UNICYCLER_VERSION {
     label 'farm_high'
 
     output:
-    tuple env(VERSION), env(THREAD)
+    tuple env('VERSION'), env('THREAD')
 
     script:
     '''
@@ -501,7 +501,7 @@ process SHOVILL_VERSION {
     label 'farm_high'
 
     output:
-    tuple env(VERSION), env(THREAD)
+    tuple env('VERSION'), env('THREAD')
 
     script:
     '''
@@ -515,7 +515,7 @@ process QUAST_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -528,7 +528,7 @@ process BWA_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -541,7 +541,7 @@ process SAMTOOLS_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -554,7 +554,7 @@ process BCFTOOLS_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -567,7 +567,7 @@ process POPPUNK_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -580,7 +580,7 @@ process MLST_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -593,7 +593,7 @@ process KRAKEN2_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -606,7 +606,7 @@ process SEROBA_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -619,7 +619,7 @@ process ARIBA_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
@@ -632,7 +632,7 @@ process BAKTA_VERSION {
     label 'farm_low'
 
     output:
-    env VERSION
+    env 'VERSION'
 
     script:
     '''
