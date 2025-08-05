@@ -1,22 +1,12 @@
 #!/usr/bin/env nextflow
 
-// Version of this release
-pipelineVersion = '1.1.0'
-
 // Import workflow modules
 include { PIPELINE } from './workflows/pipeline'
 include { INIT } from './workflows/init'
 include { PRINT_VERSION; SAVE_INFO } from './workflows/info_and_version'
 
-// Safeguard Nextflow minimum version, in case user is not using the included executable
-nextflowMinVersion = '23.10' 
-if( !nextflow.version.matches(">=${nextflowMinVersion}") ) {
-    log.error("The pipeline requires Nextflow version ${nextflowMinVersion} or greater -- You are running version $nextflow.version") 
-    System.exit(1)
-}
-
 // Start message
-Messages.startMessage(pipelineVersion, log)
+Messages.startMessage(workflow.manifest.version, log)
 
 // Validate parameters
 Validate.validate(params, workflow, log)
@@ -36,11 +26,11 @@ workflow {
         INIT()
     } else if (params.version) {
         Messages.workflowSelectMessage('version', params, log)
-        PRINT_VERSION(params.resistance_to_mic, pipelineVersion)
+        PRINT_VERSION(params.resistance_to_mic, workflow.manifest.version)
     } else {
         Messages.workflowSelectMessage('pipeline', params, log)
         PIPELINE()
-        SAVE_INFO(PIPELINE.out.databases_info, params.resistance_to_mic, pipelineVersion)
+        SAVE_INFO(PIPELINE.out.databases_info, params.resistance_to_mic, workflow.manifest.version)
     }
 
     // End message
