@@ -126,7 +126,7 @@ workflow PIPELINE {
     // Merge Channels FILE_VALIDATION.out.result & READ_QC.out.result & ASSEMBLY_QC.out.result & MAPPING_QC.out.result & TAXONOMY_QC.out.result to provide Overall QC Status
     // Output into Channel OVERALL_QC.out.result & OVERALL_QC.out.report
     OVERALL_QC(
-        raw_read_pairs_ch.map{ [it[0]] }
+        raw_read_pairs_ch.map{ it[0] }
         .join(FILE_VALIDATION.out.result, failOnDuplicate: true, remainder: true)
         .join(READ_QC.out.result, failOnDuplicate: true, remainder: true)
         .join(ASSEMBLY_QC.out.result, failOnDuplicate: true, remainder: true)
@@ -173,7 +173,7 @@ workflow PIPELINE {
 
     // Generate sample reports by merging outputs from all result-generating modules
     GENERATE_SAMPLE_REPORT(
-        raw_read_pairs_ch.map{ [it[0]] }
+        raw_read_pairs_ch.map{ it[0] }
         .join(READ_QC.out.report, failOnDuplicate: true, remainder: true)
         .join(ASSEMBLY_QC.out.report, failOnDuplicate: true, remainder: true)
         .join(MAPPING_QC.out.report, failOnDuplicate: true, remainder: true)
