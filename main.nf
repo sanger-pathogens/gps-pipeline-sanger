@@ -4,14 +4,9 @@
 pipelineVersion = '1.1.0'
 
 // Import workflow modules
-include { PIPELINE } from "$projectDir/workflows/pipeline"
-include { INIT } from "$projectDir/workflows/init"
-include { PRINT_VERSION; SAVE_INFO } from "$projectDir/workflows/info_and_version"
-
-// Import supporting modules
-include { startMessage; helpMessage; workflowSelectMessage; endMessage } from "$projectDir/modules/messages"
-include { validate } from "$projectDir/modules/validate"
-include { singularityPreflight } from "$projectDir/modules/singularity"
+include { PIPELINE } from './workflows/pipeline'
+include { INIT } from './workflows/init'
+include { PRINT_VERSION; SAVE_INFO } from './workflows/info_and_version'
 
 // Safeguard Nextflow minimum version, in case user is not using the included executable
 nextflowMinVersion = '23.10' 
@@ -21,43 +16,44 @@ if( !nextflow.version.matches(">=${nextflowMinVersion}") ) {
 }
 
 // Start message
-startMessage(pipelineVersion)
+Messages.startMessage(pipelineVersion, log)
 
 // Validate parameters
-validate(params)
+Validate.validate(params, workflow, log)
 
 // If Singularity is used as the container engine and not showing help message, do preflight check to prevent parallel pull issues
 // Related issue: https://github.com/nextflow-io/nextflow/issues/1210
 if (workflow.containerEngine == 'singularity' & !params.help) {
-    singularityPreflight(workflow.container, params.singularity_cachedir)
+    Singularity.singularityPreflight(workflow.container, params.singularity_cachedir, log)
 }
 
 // Select workflow with PIPELINE as default
 workflow {
     if (params.help) {
-        helpMessage()
+        Messages.helpMessage(log)
     } else if (params.init) {
-        workflowSelectMessage('init')
+        Messages.workflowSelectMessage('init', params, log)
         INIT()
     } else if (params.version) {
-        workflowSelectMessage('version')
+        Messages.workflowSelectMessage('version', params, log)
         PRINT_VERSION(params.resistance_to_mic, pipelineVersion)
     } else {
-        workflowSelectMessage('pipeline')
+        Messages.workflowSelectMessage('pipeline', params, log)
         PIPELINE()
         SAVE_INFO(PIPELINE.out.databases_info, params.resistance_to_mic, pipelineVersion)
     }
-}
 
-// End message
-workflow.onComplete {
-    if (params.help) {
-        return
-    } else if (params.init) {
-        endMessage('init')
-    } else if (params.version) {
-        endMessage('version')
-    } else {
-        endMessage('pipeline')
+    // End message
+    workflow.onComplete = {
+        if (params.help) {
+            return
+        } else if (params.init) {
+            Messages.endMessage('init', params, workflow, log)
+        } else if (params.version) {
+            Messages.endMessage('version', params, workflow, log)
+        } else {
+            Messages.endMessage('pipeline', params, workflow, log)
+        }
     }
 }
+
