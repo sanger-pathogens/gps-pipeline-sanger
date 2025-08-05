@@ -62,14 +62,13 @@ workflow PIPELINE {
 
     // From Channel READ_QC_PASSED_READS_ch, assemble the preprocess read pairs
     // Output into Channel ASSEMBLY_ch, and hardlink (default) the assemblies to $params.output directory
-    switch (params.assembler) {
-        case 'shovill':
-            ASSEMBLY_ch = ASSEMBLY_SHOVILL(READ_QC_PASSED_READS_ch, params.min_contig_length, params.assembler_thread)
-            break
-
-        case 'unicycler':
-            ASSEMBLY_ch = ASSEMBLY_UNICYCLER(READ_QC_PASSED_READS_ch, params.min_contig_length, params.assembler_thread)
-            break
+    if (params.assembler == 'shovill') {
+        ASSEMBLY_ch = ASSEMBLY_SHOVILL(READ_QC_PASSED_READS_ch, params.min_contig_length, params.assembler_thread)
+    } else if (params.assembler == 'unicycler') {
+        ASSEMBLY_ch = ASSEMBLY_UNICYCLER(READ_QC_PASSED_READS_ch, params.min_contig_length, params.assembler_thread)
+    } else {
+        log.error("Invalid assembler was selected.") 
+        System.exit(1)
     }
 
     // From Channel ASSEMBLY_ch, assess assembly quality
