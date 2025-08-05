@@ -14,6 +14,7 @@ skipValidationParams = [
     outdir: 'skip',
     manifest_of_reads: 'skip',
     manifest_of_lanes: 'skip',
+    manifest_ena: 'skip',
     manifest: 'skip',
     save_metadata: 'skip',
     combine_same_id_crams: 'skip',
@@ -34,8 +35,11 @@ skipValidationParams = [
     plexid: 'skip',
     target: 'skip',
     type: 'skip',
-    // reads is optional due to mixed input
-    reads: 'skip'
+    reads: 'skip', // reads is optional due to mixed input
+    large_data: 'skip',
+    read_type: 'skip',
+    publish_metadata: 'skip',
+    accession_type: 'skip',
 ] 
 
 // Map of valid parameters and their value types
