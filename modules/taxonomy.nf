@@ -69,7 +69,7 @@ process TAXONOMY_QC {
     val(qc_top_non_strep_genus_percentage)
 
     output:
-    tuple val(sample_id), env(TAXONOMY_QC), emit: result
+    tuple val(sample_id), env('TAXONOMY_QC'), emit: result
     tuple val(sample_id), path(taxonomy_qc_report), emit: report
 
     script:

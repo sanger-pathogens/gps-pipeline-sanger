@@ -96,7 +96,7 @@ process ASSEMBLY_QC {
     val(qc_depth)
 
     output:
-    tuple val(sample_id), env(ASSEMBLY_QC), emit: result
+    tuple val(sample_id), env('ASSEMBLY_QC'), emit: result
     tuple val(sample_id), path(assembly_qc_report), emit: report
 
     script:

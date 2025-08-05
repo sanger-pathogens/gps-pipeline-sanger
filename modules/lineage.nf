@@ -11,7 +11,7 @@ process GET_POPPUNK_DB {
 
     output:
     path poppunk_db, emit: path
-    env DB_NAME, emit: database
+    env 'DB_NAME', emit: database
 
     script:
     poppunk_db="${db}/poppunk"
@@ -40,7 +40,7 @@ process GET_POPPUNK_EXT_CLUSTERS {
 
     output:
     path poppunk_ext, emit: path
-    env EXT_CLUSTERS_CSV, emit: file
+    env 'EXT_CLUSTERS_CSV', emit: file
 
     script:
     poppunk_ext="${db}/poppunk_ext"
