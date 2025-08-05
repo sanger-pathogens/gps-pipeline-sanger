@@ -1,11 +1,11 @@
 // Import process modules
-include { GET_REF_GENOME_BWA_DB } from "$projectDir/modules/mapping"
-include { GET_KRAKEN2_DB } from "$projectDir/modules/taxonomy"
-include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS } from "$projectDir/modules/lineage"
-include { GET_SEROBA_DB } from "$projectDir/modules/serotype"
-include { GET_DOCKER_COMPOSE; PULL_IMAGES } from "$projectDir/modules/docker"
-include { GET_ARIBA_DB } from "$projectDir/modules/amr"
-include { GET_BAKTA_DB } from "$projectDir/modules/annotation"
+include { GET_REF_GENOME_BWA_DB } from '../modules/mapping'
+include { GET_KRAKEN2_DB } from '../modules/taxonomy'
+include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS } from '../modules/lineage'
+include { GET_SEROBA_DB } from '../modules/serotype'
+include { GET_DOCKER_COMPOSE; PULL_IMAGES } from '../modules/docker'
+include { GET_ARIBA_DB } from '../modules/amr'
+include { GET_BAKTA_DB } from '../modules/annotation'
 
 // Alternative workflow for initialisation only
 workflow INIT {

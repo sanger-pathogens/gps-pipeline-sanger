@@ -1,15 +1,15 @@
 // Import process modules
-include { FILE_VALIDATION; PREPROCESS; READ_QC } from "$projectDir/modules/preprocess"
-include { ASSEMBLY_UNICYCLER; ASSEMBLY_SHOVILL; ASSEMBLY_ASSESS; ASSEMBLY_QC } from "$projectDir/modules/assembly"
-include { GET_REF_GENOME_BWA_DB; MAPPING; SAM_TO_SORTED_BAM; SNP_CALL; HET_SNP_COUNT; MAPPING_QC } from "$projectDir/modules/mapping"
-include { GET_KRAKEN2_DB; TAXONOMY; TAXONOMY_QC } from "$projectDir/modules/taxonomy"
-include { OVERALL_QC } from "$projectDir/modules/overall_qc"
-include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS; LINEAGE } from "$projectDir/modules/lineage"
-include { GET_SEROBA_DB; SEROTYPE } from "$projectDir/modules/serotype"
-include { MLST } from "$projectDir/modules/mlst"
-include { PBP_RESISTANCE; PARSE_PBP_RESISTANCE; GET_ARIBA_DB; OTHER_RESISTANCE; PARSE_OTHER_RESISTANCE } from "$projectDir/modules/amr"
-include { GET_BAKTA_DB; ANNOTATE } from "$projectDir/modules/annotation"
-include { GENERATE_SAMPLE_REPORT; GENERATE_OVERALL_REPORT } from "$projectDir/modules/output"
+include { FILE_VALIDATION; PREPROCESS; READ_QC } from '../modules/preprocess'
+include { ASSEMBLY_UNICYCLER; ASSEMBLY_SHOVILL; ASSEMBLY_ASSESS; ASSEMBLY_QC } from '../modules/assembly'
+include { GET_REF_GENOME_BWA_DB; MAPPING; SAM_TO_SORTED_BAM; SNP_CALL; HET_SNP_COUNT; MAPPING_QC } from '../modules/mapping'
+include { GET_KRAKEN2_DB; TAXONOMY; TAXONOMY_QC } from '../modules/taxonomy'
+include { OVERALL_QC } from '../modules/overall_qc'
+include { GET_POPPUNK_DB; GET_POPPUNK_EXT_CLUSTERS; LINEAGE } from '../modules/lineage'
+include { GET_SEROBA_DB; SEROTYPE } from '../modules/serotype'
+include { MLST } from '../modules/mlst'
+include { PBP_RESISTANCE; PARSE_PBP_RESISTANCE; GET_ARIBA_DB; OTHER_RESISTANCE; PARSE_OTHER_RESISTANCE } from '../modules/amr'
+include { GET_BAKTA_DB; ANNOTATE } from '../modules/annotation'
+include { GENERATE_SAMPLE_REPORT; GENERATE_OVERALL_REPORT } from '../modules/output'
 
 // Main pipeline workflow
 workflow PIPELINE {
