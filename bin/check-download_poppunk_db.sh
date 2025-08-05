@@ -23,6 +23,7 @@ if  [ ! -f "${DB_LOCAL}/${JSON_FILE}" ] || \
     jq -n \
         --arg url "$DB_REMOTE" \
         --arg save_time "$(date +"%Y-%m-%d %H:%M:%S %Z")" \
-        '{"url" : $url, "save_time": $save_time}' > "${DB_LOCAL}/${JSON_FILE}"
+        --arg db_version "$DB_NAME" \
+        '{"url" : $url, "save_time": $save_time, "db_version", $db_version}' > "${DB_LOCAL}/${JSON_FILE}"
 
 fi
