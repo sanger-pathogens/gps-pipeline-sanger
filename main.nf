@@ -5,20 +5,21 @@ include { PIPELINE } from './workflows/pipeline'
 include { INIT } from './workflows/init'
 include { PRINT_VERSION; SAVE_INFO } from './workflows/info_and_version'
 
-// Start message
-Messages.startMessage(workflow.manifest.version, log)
 
-// Validate parameters
-Validate.validate(params, workflow, log)
-
-// If Singularity is used as the container engine and not showing help message, do preflight check to prevent parallel pull issues
-// Related issue: https://github.com/nextflow-io/nextflow/issues/1210
-if (workflow.containerEngine == 'singularity' & !params.help) {
-    Singularity.singularityPreflight(workflow.container, params.singularity_cachedir, log)
-}
-
-// Select workflow with PIPELINE as default
 workflow {
+    // Start message
+    Messages.startMessage(workflow.manifest.version, log)
+
+    // Validate parameters
+    Validate.validate(params, workflow, log)
+
+    // If Singularity is used as the container engine and not showing help message, do preflight check to prevent parallel pull issues
+    // Related issue: https://github.com/nextflow-io/nextflow/issues/1210
+    if (workflow.containerEngine == 'singularity' & !params.help) {
+        Singularity.singularityPreflight(workflow.container, params.singularity_cachedir, log)
+    }
+
+    // Select workflow with PIPELINE as default
     if (params.help) {
         Messages.helpMessage(log)
     } else if (params.init) {
