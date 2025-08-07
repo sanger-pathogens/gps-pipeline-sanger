@@ -5,21 +5,28 @@ workflow PRINT_VERSION {
     take:
         resistance_to_mic
         pipeline_version
+        db
+        assembler
 
     main:
         GET_VERSION(
-            "${params.db}/bwa",
-            "${params.db}/ariba",
-            "${params.db}/kraken2",
-            "${params.db}/seroba",
-            "${params.db}/poppunk",
-            "${params.db}/poppunk_ext",
-            "${params.db}/bakta",
+            "${db}/bwa",
+            "${db}/ariba",
+            "${db}/kraken2",
+            "${db}/seroba",
+            "${db}/poppunk",
+            "${db}/poppunk_ext",
+            "${db}/bakta",
             resistance_to_mic,
             pipeline_version
-        ) \
-        | PARSE \
-        | PRINT
+        )
+        
+        PARSE(
+            GET_VERSION.out.json,
+            assembler
+        )
+        
+        PRINT(PARSE.out.text)
 }
 
 // Sub-workflow of PIPELINE workflow the save versions of pipeline and tools, and QC parameters to info.txt at output dir
@@ -28,6 +35,20 @@ workflow SAVE_INFO {
         databases_info
         resistance_to_mic
         pipeline_version
+        assembler
+        assembler_thread
+        min_contig_length
+        reads
+        output
+        contigs
+        length_low
+        length_high
+        depth
+        spneumo_percentage
+        non_strep_percentage
+        ref_coverage
+        het_snp_site
+
 
     main:
         GET_VERSION(
@@ -40,9 +61,29 @@ workflow SAVE_INFO {
             databases_info.bakta_db_path,
             resistance_to_mic,
             pipeline_version
-        ) \
-       | PARSE \
-       | SAVE
+        )
+
+       PARSE(
+            GET_VERSION.out.json,
+            assembler
+        )
+       
+       SAVE(
+            PARSE.out.text,
+            reads,
+            output,
+            assembler,
+            assembler_thread,
+            min_contig_length,
+            contigs,
+            length_low,
+            length_high,
+            depth,
+            spneumo_percentage,
+            non_strep_percentage,
+            ref_coverage,
+            het_snp_site
+        )
 }
 
 // Sub-workflow for generating a json that contains versions of pipeline and tools
@@ -119,5 +160,5 @@ workflow GET_VERSION {
         )
 
     emit:
-        COMBINE_INFO.out.json
+        json = COMBINE_INFO.out.json
 }

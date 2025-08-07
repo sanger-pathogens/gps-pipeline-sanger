@@ -152,22 +152,19 @@ process PARSE {
 
     input:
     val json_file
+    val assembler
 
     output:
-    val coreText
-    val dbText
-    val toolText
-    val imageText
-    val nprocValue
+    tuple val(coreText), val(dbText), val(toolText), val(imageText), val(nprocValue), emit: text
 
     exec:
     def jsonSlurper = new groovy.json.JsonSlurper()
 
     def json = jsonSlurper.parse(new File("${json_file}"))
 
-    if (params.assembler == 'unicycler') {
+    if (assembler == 'unicycler') {
         nprocValue = json.unicycler.nproc_value
-    } else if (params.assembler == 'shovill') {
+    } else if (assembler == 'shovill') {
         nprocValue = json.shovill.nproc_value
     }
 
@@ -286,11 +283,7 @@ process PRINT {
     label 'farm_local'
 
     input:
-    val coreText
-    val dbText
-    val toolText
-    val imageText
-    val nprocValue
+    tuple val(coreText), val(dbText), val(toolText), val(imageText), val(nprocValue)
 
     exec:
     log.info(
@@ -311,21 +304,30 @@ process PRINT {
 process SAVE {
     label 'farm_local'
     
-    publishDir "${params.output}", mode: "copy"
+    publishDir "${output}", mode: "copy"
 
     input:
-    val coreText
-    val dbText
-    val toolText
-    val imageText
-    val nprocValue
+    tuple val(coreText), val(dbText), val(toolText), val(imageText), val(nprocValue)
+    val reads
+    val output
+    val assembler
+    val assembler_thread
+    val min_contig_length
+    val contigs
+    val length_low
+    val length_high
+    val depth
+    val spneumo_percentage
+    val non_strep_percentage
+    val ref_coverage
+    val het_snp_site
 
     output:
     path "info.txt", emit: info
 
     exec:
-    File readsDir = new File(params.reads)
-    File outputDir = new File(params.output)
+    File readsDir = new File(reads)
+    File outputDir = new File(output)
 
     String ioText = """\
     |┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈ Input and Output ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
@@ -342,9 +344,9 @@ process SAVE {
     |╔═══════════════════════════╤═════════════════════════════════════════════════════════════════════╗
     |${Texts.assemblerTextRow('Option', 'Value')}
     |╠═══════════════════════════╪═════════════════════════════════════════════════════════════════════╣
-    |${Texts.assemblerTextRow('Assembler', params.assembler.capitalize())}
-    |${Texts.assemblerTextRow('Assembler Thread', params.assembler_thread == 0 ? "${nprocValue} (All Available)" : params.assembler_thread)}
-    |${Texts.assemblerTextRow('Minimum contig length', params.min_contig_length)}
+    |${Texts.assemblerTextRow('Assembler', assembler.capitalize())}
+    |${Texts.assemblerTextRow('Assembler Thread', assembler_thread == 0 ? "${nprocValue} (All Available)" : assembler_thread)}
+    |${Texts.assemblerTextRow('Minimum contig length', min_contig_length)}
     |╚═══════════════════════════╧═════════════════════════════════════════════════════════════════════╝
     |""".stripMargin()
 
@@ -353,24 +355,24 @@ process SAVE {
     |╔═════════════════════════════════════════════════════════════════════════════════════════════════╗
     |║ Read QC                                                                                         ║
     |╟──────────────────────────────────────────────────────────────┬──────────────────────────────────╢
-    |${Texts.qcTextRow('Minimum bases in processed reads', String.format("%.0f", Math.ceil(params.length_low * params.depth)))}
+    |${Texts.qcTextRow('Minimum bases in processed reads', String.format("%.0f", Math.ceil(length_low * depth)))}
     |╠══════════════════════════════════════════════════════════════╧══════════════════════════════════╣
     |║ Taxonomy QC                                                                                     ║
     |╟──────────────────────────────────────────────────────────────┬──────────────────────────────────╢
-    |${Texts.qcTextRow('Minimum S. pneumoniae percentage in reads', params.spneumo_percentage)}
-    |${Texts.qcTextRow('Maximum non-Streptococcus genus percentage in reads', params.non_strep_percentage)}
+    |${Texts.qcTextRow('Minimum S. pneumoniae percentage in reads', spneumo_percentage)}
+    |${Texts.qcTextRow('Maximum non-Streptococcus genus percentage in reads', non_strep_percentage)}
     |╠══════════════════════════════════════════════════════════════╧══════════════════════════════════╣
     |║ Mapping QC                                                                                      ║
     |╟──────────────────────────────────────────────────────────────┬──────────────────────────────────╢
-    |${Texts.qcTextRow('Minimum reference coverage percentage by the reads', params.ref_coverage)}
-    |${Texts.qcTextRow('Maximum non-cluster heterozygous SNP (Het-SNP) site count', params.het_snp_site)}
+    |${Texts.qcTextRow('Minimum reference coverage percentage by the reads', ref_coverage)}
+    |${Texts.qcTextRow('Maximum non-cluster heterozygous SNP (Het-SNP) site count', het_snp_site)}
     |╠══════════════════════════════════════════════════════════════╧══════════════════════════════════╣
     |║ Assembly QC                                                                                     ║
     |╟──────────────────────────────────────────────────────────────┬──────────────────────────────────╢
-    |${Texts.qcTextRow('Maximum contig count in assembly', params.contigs)}
-    |${Texts.qcTextRow('Minimum assembly length', params.length_low)}
-    |${Texts.qcTextRow('Maximum assembly length', params.length_high)}
-    |${Texts.qcTextRow('Minimum sequencing depth', params.depth)}
+    |${Texts.qcTextRow('Maximum contig count in assembly', contigs)}
+    |${Texts.qcTextRow('Minimum assembly length', length_low)}
+    |${Texts.qcTextRow('Maximum assembly length', length_high)}
+    |${Texts.qcTextRow('Minimum sequencing depth', depth)}
     |╚══════════════════════════════════════════════════════════════╧══════════════════════════════════╝
     |""".stripMargin()
 
@@ -383,8 +385,8 @@ process SAVE {
     |╚═══════════════════════════╧═════════════════════════════════════════════════════════════════════╝
     |""".stripMargin()
 
-    File output = new File("${task.workDir}/info.txt")
-    output.write(
+    File info_file = new File("${task.workDir}/info.txt")
+    info_file.write(
         """\
         |${coreText}
         |${ioText}
