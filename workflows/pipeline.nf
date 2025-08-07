@@ -32,16 +32,21 @@ workflow PIPELINE {
     // Get path to ARIBA database, generate from reference sequences and metadata if ncessary
     GET_ARIBA_DB(params.ariba_ref, params.ariba_metadata, params.db)
 
-    // Obtain input from manifests and iRODS params
-    MIXED_INPUT
-    | map { meta, R1, R2 -> [meta.ID, [R1, R2]] }
-    | set { raw_read_pairs_ch }
+    raw_read_pairs_ch = Channel.empty()
 
     // Get read pairs into Channel raw_read_pairs_ch
     if (params.reads) {
         Channel.fromFilePairs("$params.reads/*_{,R}{1,2}{,_001}.{fq,fastq}{,.gz}", checkIfExists: true)
-        | mix(raw_read_pairs_ch)
-        | set { raw_read_pairs_ch }
+            .mix(raw_read_pairs_ch)
+            .set { raw_read_pairs_ch }
+    }
+
+    // Obtain input from manifests and iRODS params
+    if (params.manifest_ena || params.manifest_of_lanes || params.manifest_of_reads || params.manifest || params.studyid != -1|| params.runid != -1 || params.laneid != -1 || params.plexid != -1) {
+        MIXED_INPUT()
+            .map { meta, R1, R2 -> [meta.ID, [R1, R2]] }
+            .mix(raw_read_pairs_ch)
+            .set { raw_read_pairs_ch }
     }
 
     // Basic input files validation
