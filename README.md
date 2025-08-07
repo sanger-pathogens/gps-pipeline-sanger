@@ -232,7 +232,7 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 | `--reads` | Any valid path<br />(Default: `"$projectDir/input"`) | Path to the input directory that contains the reads to be processed. |
 | `--output` | Any valid path<br />(Default: `"$projectDir/output"`)| Path to the output directory that save the results. |
 | `--db` | Any valid path<br />(Default: `"$projectDir/databases"`)| Path to the directory saving databases used by the pipeline. |
-| `--file_publish` | `"link"` or `"symlink"` or `"copy"`<br />(Default: `"link"`)| Method used by Nextflow to publish the generated assemblies and annotations (if selected).<br>(The default setting `"link"` means hard link, therefore will fail if the output directory is set to outside of the working file system) |
+| `--file_publish` | `"link"` or `"symlink"` or `"copy"`<br />(Default: `"copy"`)| Method used by Nextflow to publish the generated assemblies and annotations (if selected).<br>(The setting `"link"` means hard link, therefore will fail if the output directory is set to outside of the working file system) |
 
 ## QC Parameters
 > [!NOTE]
