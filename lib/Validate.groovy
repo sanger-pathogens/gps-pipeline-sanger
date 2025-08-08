@@ -2,7 +2,7 @@ class Validate {
     // Validate whether all provided parameters are valid
     public static void validate(Map params, workflow, log) {
         // Map of valid parameters for which to skip validation
-        skipValidationParams = [
+        Map skipValidationParams = [
             // From common config
             input: 'skip',
             tracedir: 'skip',
