@@ -7,7 +7,7 @@
 
 The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials. The pipeline can optionally generate annotations. 
 
-The pipeline is designed to be easy to set up and use, and is suitable for use on ~~local machines and~~ high-performance computing (HPC) clusters alike. Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
+**This fork is optimised for Sanger HPC.** The pipeline is designed to be easy to set up and use, and is suitable for use on local machines and high-performance computing (HPC) clusters alike.  Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
 
 The development of this pipeline is part of the GPS Project ([Global Pneumococcal Sequencing Project](https://www.pneumogen.net/gps/)). 
 
@@ -107,7 +107,7 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 
      Each parameter restricts the set of data files that match and will be downloaded. With the exception of `--type` and `--target`, omitting an option causes samples for all possible values of the parameter to be retrieved.
 
-     Either `--studyid` or `--runid` is required.While `--laneid`, `--plexid`, `--target` and `--type` are optional. This avoids indiscriminately and unintentionally downloading thousands of files.
+     Either `--studyid` or `--runid` is required, while `--laneid`, `--plexid`, `--target` and `--type` are optional. This avoids indiscriminately and unintentionally downloading thousands of files.
      ```
       --studyid
             default: -1
@@ -152,7 +152,7 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 
 ## Setup 
 > [!WARNING]
-> - Docker or Singularity must be running
+> - Singularity must be running
 > - An Internet connection is required
 1. Clone the repository (`git` must be installed on your system)
     ```
@@ -173,27 +173,22 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
     ```
 
 3. (Optional) You could perform an initialisation to download all required additional files and container images, so the pipeline can be used at any time with or without the Internet afterwards.
-    - Using Docker as the container engine
+    - Using Singularity as the container engine
         ```
         ./run_pipeline --init
         ```
-    - Using Singularity as the container engine
-        ```
-        ./run_pipeline --init -profile singularity
-        ```
-     - Include the download of Bakta database for annotation (add `-profile singularity` if Singularity instead of Docker should be used as the container engine)
+     - Include the download of Bakta database for annotation
         ```
         ./run_pipeline --init --annotation
         ```
 
 ## Run
 > [!WARNING]
-> - Docker or Singularity must be running
+> - Singularity must be running
 > - If this is the first run and initialisation was not performed, an Internet connection is required
 
 > [!NOTE]
-> By default, Docker is used as the container engine and all the processes are executed by the local machine. See [Profile](#profile) for details on running the pipeline with Singularity or on a HPC cluster
-- You can run the pipeline without options. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
+> By default, Singularity is used as the container engine and all the processes are executed by LSF. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
     ```
     ./run_pipeline
     ```
@@ -216,17 +211,16 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 ## Profile
 > [!TIP]
 > `-profile` is a built-in Nextflow option, it only has one leading `-`
-- By default, Docker is used as the container engine and all the processes are executed by the local machine. To change this, you could use Nextflow's built-in `-profile` option to switch to other available profiles
+- By default, Singularity is used as the container engine and all the processes are are executed by LSF. To change this, you could use Nextflow's built-in `-profile` option to switch to other available profiles
     ```
     ./run_pipeline -profile [profile name]
     ```
 - Available profiles: 
     | Profile Name | Details |
     | --- | --- |
-    | `standard`<br> (Default) | Docker is used as the container engine. <br> Processes are executed locally. |
-    | `singularity` |  Singularity is used as the container engine. <br> Processes are executed locally. |
-    | `lsf` | **The pipeline should be launched from a LSF cluster head node with this profile.** <br>Singularity is used as the container engine. <br> Processes are submitted to your LSF cluster via `bsub` by the pipeline. <br> (Tested on Wellcome Sanger Institute farm22 LSF cluster only) <br> (Option `--kraken2_memory_mapping` default change to `false`.) |
-    | `sanger` | **Only required for Sanger HPC cluster.** <br>Intended to be used in combination with `lsf` profile. |
+    | `standard`<br> (Default) | **The pipeline should be launched from a LSF cluster head node with this profile.** <br>Singularity is used as the container engine. <br> Processes are submitted to your LSF cluster via `bsub` by the pipeline. <br> (Tested on Wellcome Sanger Institute farm22 LSF cluster only) <br> (Option `--kraken2_memory_mapping` default change to `false`; Bakta uses full database instead of light.) |
+    | `docker` | Docker is used as the container engine. <br> Processes are executed locally. |
+    | `singularity` | Singularity is used as the container engine. <br> Processes are executed locally. |
 
 ## Resume
 > [!TIP]
