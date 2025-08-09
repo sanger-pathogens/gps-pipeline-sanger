@@ -80,7 +80,7 @@ workflow PIPELINE {
     // Obtain input from manifests and iRODS params
     if (params.manifest_ena || params.manifest_of_lanes || params.manifest_of_reads || params.manifest || params.studyid != -1|| params.runid != -1 || params.laneid != -1 || params.plexid != -1) {
         MIXED_INPUT()
-            .map { meta, R1, R2 -> [meta.ID, [R1, R2]] }
+            .map { meta, R1, R2 -> [meta.ID.toString(), [R1, R2]] }
             .mix(raw_read_pairs_ch)
             .set { raw_read_pairs_ch }
     }
