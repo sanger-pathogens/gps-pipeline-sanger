@@ -85,6 +85,17 @@ workflow PIPELINE {
             .set { raw_read_pairs_ch }
     }
 
+    // Validate IDs in the raw_read_pairs_ch are unique before further processing
+    ids_ch = raw_read_pairs_ch.map { it [0] }
+    ids_ch.count()
+        .combine(ids_ch.unique().count())
+        .subscribe {
+            if ( it[0] != it[1]) {
+                log.error("There are duplicated IDs in the input. Please make sure IDs are unique across all input sources.") 
+                System.exit(1)
+            }
+        }
+
     // Basic input files validation
     // Output into Channel FILE_VALIDATION.out.result
     FILE_VALIDATION(raw_read_pairs_ch)
