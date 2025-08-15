@@ -1,13 +1,13 @@
 # GPS Pipeline (Internal Use at Sanger) <!-- omit in toc -->
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-24.10.3-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.04.6-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
 
-The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials.
+The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials. The pipeline can optionally generate annotations. 
 
-The pipeline is designed to be easy to set up and use, and is suitable for use on ~~local machines and~~ high-performance computing (HPC) clusters alike. Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
+**This fork is optimised for Sanger HPC.** The pipeline is designed to be easy to set up and use, and is suitable for use on local machines and high-performance computing (HPC) clusters alike.  Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
 
 The development of this pipeline is part of the GPS Project ([Global Pneumococcal Sequencing Project](https://www.pneumogen.net/gps/)). 
 
@@ -41,6 +41,7 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
   - [Serotype](#serotype)
   - [Lineage](#lineage)
   - [Other AMR](#other-amr)
+  - [Annotation](#annotation)
   - [Singularity](#singularity)
   - [Experimental](#experimental)
 - [Output](#output)
@@ -62,7 +63,7 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
 ### Software
 - A POSIX-compatible operating system (e.g. Linux, macOS, Windows with [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) with Bash 3.2 or later
     - [Installation guide for WSL on Windows](https://learn.microsoft.com/en-us/windows/wsl/install) by Microsoft
-- Java 11 or later (up to 22) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
+- Java 17 or later (up to 24) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
     - [Installation guide for OpenJDK](https://www.freecodecamp.org/news/install-openjdk-free-java-multi-os-guide/) by freeCodeCamp
 - [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/)
     - Installation guides:
@@ -79,9 +80,9 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
 ### Hardware 
 It is recommended to have at least 16GB of RAM and 100GB of free storage
 > [!NOTE] 
-> - The pipeline core files use ~5MB
-> - All default databases use ~19GB in total
-> - All Docker images use ~13GB in total; alternatively, Singularity images use ~4.5GB in total
+> - The pipeline core files use ~6MB
+> - All default databases use ~20GB in total (the optional Bakta database for annotation use an additional ~4GB)
+> - All Docker images use ~14GB in total; alternatively, Singularity images use ~4.7GB in total
 > - The pipeline generates ~1.8GB intermediate files for each sample on average
 >     - These files can be removed when the pipeline run is completed, please refer to [Clean Up](#clean-up)
 >     - To further reduce storage requirement by sacrificing the ability to resume the pipeline, please refer to [Experimental](#experimental)
@@ -106,7 +107,7 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 
      Each parameter restricts the set of data files that match and will be downloaded. With the exception of `--type` and `--target`, omitting an option causes samples for all possible values of the parameter to be retrieved.
 
-     Either `--studyid` or `--runid` is required.While `--laneid`, `--plexid`, `--target` and `--type` are optional. This avoids indiscriminately and unintentionally downloading thousands of files.
+     Either `--studyid` or `--runid` is required, while `--laneid`, `--plexid`, `--target` and `--type` are optional. This avoids indiscriminately and unintentionally downloading thousands of files.
      ```
       --studyid
             default: -1
@@ -151,7 +152,7 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 
 ## Setup 
 > [!WARNING]
-> - Docker or Singularity must be running
+> - Singularity must be running
 > - An Internet connection is required
 1. Clone the repository (`git` must be installed on your system)
     ```
@@ -172,29 +173,32 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
     ```
 
 3. (Optional) You could perform an initialisation to download all required additional files and container images, so the pipeline can be used at any time with or without the Internet afterwards.
-    - Using Docker as the container engine
+    - Using Singularity as the container engine
         ```
         ./run_pipeline --init
         ```
-    - Using Singularity as the container engine
+     - Include the download of Bakta database for annotation
         ```
-        ./run_pipeline --init -profile singularity
+        ./run_pipeline --init --annotation
         ```
 
 ## Run
 > [!WARNING]
-> - Docker or Singularity must be running
+> - Singularity must be running
 > - If this is the first run and initialisation was not performed, an Internet connection is required
 
 > [!NOTE]
-> By default, Docker is used as the container engine and all the processes are executed by the local machine. See [Profile](#profile) for details on running the pipeline with Singularity or on a HPC cluster
-- You can run the pipeline without options. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
+> By default, Singularity is used as the container engine and all the processes are executed by LSF. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
     ```
     ./run_pipeline
     ```
 - You can also specify the location of the raw reads by adding the `--reads` option
     ```
     ./run_pipeline --reads /path/to/raw-reads-directory
+    ```
+- You can also request the pipeline to perform annotation by adding the `--annotation` option
+    ```
+    ./run_pipeline --annotation
     ```
 - For a test run, you could obtain a small test dataset by running the included `download_test_input` script. The dataset will be saved to the `test_input` directory inside the pipeline local directory. You can then run the pipeline on the test data
     ```
@@ -207,17 +211,16 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 ## Profile
 > [!TIP]
 > `-profile` is a built-in Nextflow option, it only has one leading `-`
-- By default, Docker is used as the container engine and all the processes are executed by the local machine. To change this, you could use Nextflow's built-in `-profile` option to switch to other available profiles
+- By default, Singularity is used as the container engine and all the processes are are executed by LSF. To change this, you could use Nextflow's built-in `-profile` option to switch to other available profiles
     ```
     ./run_pipeline -profile [profile name]
     ```
 - Available profiles: 
     | Profile Name | Details |
     | --- | --- |
-    | `standard`<br> (Default) | Docker is used as the container engine. <br> Processes are executed locally. |
-    | `singularity` |  Singularity is used as the container engine. <br> Processes are executed locally. |
-    | `lsf` | **The pipeline should be launched from a LSF cluster head node with this profile.** <br>Singularity is used as the container engine. <br> Processes are submitted to your LSF cluster via `bsub` by the pipeline. <br> (Tested on Wellcome Sanger Institute farm5 LSF cluster only) <br> (Option `--kraken2_memory_mapping` default change to `false`.) |
-    | `sanger` | **Only required for Sanger HPC cluster.** <br>Intended to be used in combination with `lsf` profile. |
+    | `standard`<br> (Default) | **The pipeline should be launched from a LSF cluster head node with this profile.** <br>Singularity is used as the container engine. <br> Processes are submitted to your LSF cluster via `bsub` by the pipeline. <br> (Tested on Wellcome Sanger Institute farm22 LSF cluster only) <br> (Option `--kraken2_memory_mapping` default change to `false`; Bakta uses full database instead of light.) |
+    | `docker` | Docker is used as the container engine. <br> Processes are executed locally. |
+    | `singularity` | Singularity is used as the container engine. <br> Processes are executed locally. |
 
 ## Resume
 > [!TIP]
@@ -288,7 +291,7 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 | `--reads` | Any valid path<br />(Default: `"$projectDir/input"`) | Path to the input directory that contains the reads to be processed. |
 | `--output` | Any valid path<br />(Default: `"$projectDir/output"`)| Path to the output directory that save the results. |
 | `--db` | Any valid path<br />(Default: `"$projectDir/databases"`)| Path to the directory saving databases used by the pipeline. |
-| `--assembly_publish` | `"link"` or `"symlink"` or `"copy"`<br />(Default: `"link"`)| Method used by Nextflow to publish the generated assemblies.<br>(The default setting `"link"` means hard link, therefore will fail if the output directory is set to outside of the working file system) |
+| `--file_publish` | `"link"` or `"symlink"` or `"copy"`<br />(Default: `"copy"`)| Method used by Nextflow to publish the generated assemblies and annotations (if selected).<br>(The setting `"link"` means hard link, therefore will fail if the output directory is set to outside of the working file system) |
 
 ## QC Parameters
 > [!NOTE]
@@ -347,6 +350,11 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 | `--ariba_metadata` | Any valid path to a `tsv` file<br />(Default: `"$projectDir/data/ariba_metadata.tsv"`) | Path to the metadata file for preparing ARIBA database. |
 | `--resistance_to_mic` | Any valid path to a `tsv` file<br />(Default: `"$projectDir/data/resistance_to_MIC.tsv"`) | Path to the resistance category to MIC (minimum inhibitory concentration) lookup table. |
 
+## Annotation
+| Option | Values | Description |
+| --- | ---| --- |
+| `--annotation` |  `true` or `false`<br>(Default: `false`) | Generate annotations for all QC passed genomes.<br />Can be enabled by including `--annotation` without value. |
+| `--bakta_db_remote` | Any valid URL to a Bakta database in `.tar.xz` format<br />(Default: [Version 6.0 Light](https://zenodo.org/records/14916843/files/db-light.tar.xz)) | URL to a Bakta database. |
 ## Singularity
 > [!NOTE]
 > This section is only valid when Singularity is used as the container engine
@@ -372,6 +380,7 @@ The following directories and files are output into the output directory
 | Directory / File | Description |
 | --- | ---|
 | `assemblies` | This directory contains all assemblies (`.fasta`) generated by the pipeline |
+| `annotations` | (Optional) This directory contains all annotations (`.gff3`) generated by the pipeline |
 | `results.csv` | This file contains all the information generated by the pipeline on each sample |
 | `info.txt` | This file contains information regarding the pipeline and parameters of the run |
 
@@ -486,6 +495,11 @@ This project uses open-source components. You can find the homepage or source co
 - License (GPL-3.0): https://github.com/sanger-pathogens/ariba/blob/master/LICENSE
 - This tool is used in `GET_ARIBA_DB` and `OTHER_RESISTANCE` processes of the `amr.nf` module
 
+[Bakta](https://github.com/oschwengers/bakta)
+- Schwengers O., Jelonek L., Dieckmann M. A., Beyvers S., Blom J., Goesmann A. (2021). Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microbial Genomics, 7(11). https://doi.org/10.1099/mgen.0.000685
+- License (GPL-3.0): https://github.com/oschwengers/bakta/blob/main/LICENSE
+- This tool is used in `ANNOTATE` process of the `annotation.nf` module
+
 [BCFtools](https://samtools.github.io/bcftools/) and [SAMtools](https://www.htslib.org/)
 - Twelve years of SAMtools and BCFtools. Petr Danecek, James K Bonfield, Jennifer Liddle, John Marshall, Valeriu Ohan, Martin O Pollard, Andrew Whitwham, Thomas Keane, Shane A McCarthy, Robert M Davies, Heng Li. **GigaScience**, Volume 10, Issue 2, February 2021, giab008, https://doi.org/10.1093/gigascience/giab008
 - Licenses
@@ -498,7 +512,7 @@ This project uses open-source components. You can find the homepage or source co
 - License (GPL-3.0): https://github.com/lh3/bwa/blob/master/COPYING
 - This tool is used in `GET_REF_GENOME_BWA_DB` and `MAPPING` processes of the `mapping.nf` module
 
-[Docker Images](https://hub.docker.com/u/staphb) of [ARIBA](https://hub.docker.com/r/staphb/ariba), [BCFtools](https://hub.docker.com/r/staphb/bcftools), [BWA](https://hub.docker.com/r/staphb/bwa), [fastp](https://hub.docker.com/r/staphb/fastp), [Kraken 2](https://hub.docker.com/r/staphb/kraken2), [mlst](https://hub.docker.com/r/staphb/mlst), [PopPUNK](https://hub.docker.com/r/staphb/poppunk), [QUAST](https://hub.docker.com/r/staphb/quast), [SAMtools](https://hub.docker.com/r/staphb/samtools), [Shovill](https://hub.docker.com/r/staphb/shovill), [Unicycler](https://hub.docker.com/r/staphb/unicycler) 
+[Docker Images](https://hub.docker.com/u/staphb) of [ARIBA](https://hub.docker.com/r/staphb/ariba), [Bakta](https://hub.docker.com/r/staphb/bakta), [BCFtools](https://hub.docker.com/r/staphb/bcftools), [BWA](https://hub.docker.com/r/staphb/bwa), [fastp](https://hub.docker.com/r/staphb/fastp), [Kraken 2](https://hub.docker.com/r/staphb/kraken2), [mlst](https://hub.docker.com/r/staphb/mlst), [PopPUNK](https://hub.docker.com/r/staphb/poppunk), [QUAST](https://hub.docker.com/r/staphb/quast), [SAMtools](https://hub.docker.com/r/staphb/samtools), [Shovill](https://hub.docker.com/r/staphb/shovill), [Unicycler](https://hub.docker.com/r/staphb/unicycler) 
 - [State Public Health Bioinformatics Workgroup](https://staphb.org/) ([@StaPH-B](https://github.com/StaPH-B))
 - License (GPL-3.0): https://github.com/StaPH-B/docker-builds/blob/master/LICENSE
 - These Docker images provide containerised environments with different bioinformatics tools for processes of multiple modules 
@@ -554,19 +568,19 @@ This project uses open-source components. You can find the homepage or source co
 - License (GPL-2.0): https://github.com/ablab/quast/blob/master/LICENSE.txt
 - This tool is used in `ASSEMBLY_ASSESS` process of the `assembly.nf` module
 
-[SeroBA](https://sanger-pathogens.github.io/seroba/)
-- **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
-- License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
-- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
-  - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
-  - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
-
 [resistanceDatabase](https://github.com/kumarnaren/resistanceDatabase)
 - Narender Kumar ([@kumarnaren](https://github.com/kumarnaren))
 - License (GPL-3.0): https://github.com/kumarnaren/resistanceDatabase/blob/main/LICENSE
 - `sequences.fasta` is renamed to `ariba_ref_sequences.fasta` and modified
 - `metadata.tsv` is renamed to `ariba_metadata.tsv` and modified
 - The files are used as the default inputs of `GET_ARIBA_DB` process of the `amr.nf` module
+
+[SeroBA](https://sanger-pathogens.github.io/seroba/)
+- **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
+- License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
+- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
+  - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
+  - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
 
 [Shovill](https://github.com/tseemann/shovill)
 - Torsten Seemann ([@tseemann](https://github.com/tseemann))
