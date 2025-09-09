@@ -5,9 +5,11 @@
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
 
+### **This fork is optimised for Sanger HPC.** Please use the original [GPS Pipeline](https://github.com/GlobalPneumoSeq/gps-pipeline) for other computing environments. 
+
 The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials. The pipeline can optionally generate annotations. 
 
-**This fork is optimised for Sanger HPC.** The pipeline is designed to be easy to set up and use, and is suitable for use on local machines and high-performance computing (HPC) clusters alike.  Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
+The pipeline is designed to be easy to set up and use, and is suitable for use on local machines and high-performance computing (HPC) clusters alike.  Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
 
 The development of this pipeline is part of the GPS Project ([Global Pneumococcal Sequencing Project](https://www.pneumogen.net/gps/)). 
 
@@ -56,49 +58,25 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
 
 &nbsp;
 # Usage
-> [!NOTE]
-> A Quickstart Guide is available [here](GPS_Pipeline_Quickstart_Guide.pdf). Still, we highly recommend reading the [Usage](#usage), [Pipeline Options](#pipeline-options), and [Output](#output) sections for a comprehensive understanding.
 
 ## Requirements
-### Software
-- A POSIX-compatible operating system (e.g. Linux, macOS, Windows with [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) with Bash 3.2 or later
-    - [Installation guide for WSL on Windows](https://learn.microsoft.com/en-us/windows/wsl/install) by Microsoft
-- Java 17 or later (up to 24) ([OpenJDK](https://openjdk.org/)/[Oracle Java](https://www.oracle.com/java/))
-    - [Installation guide for OpenJDK](https://www.freecodecamp.org/news/install-openjdk-free-java-multi-os-guide/) by freeCodeCamp
-- [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/)
-    - Installation guides:
-        - For Linux
-            - [Docker Engine on Linux](https://docs.docker.com/engine/install/) by Docker (must install `docker-compose-plugin` as per the guide)
-            - [Apptainer on Linux](https://apptainer.org/docs/admin/main/installation.html) by Apptainer
-            - (Not recommended) [Docker Desktop for Linux](https://docs.docker.com/desktop/), it is known to [cause permission issues](https://github.com/docker/desktop-linux/issues/81) on Linux, which could prevent the pipeline from working
-        - For macOS
-            - [Docker Desktop on macOS](https://docs.docker.com/desktop/install/mac-install/) by Docker
-              - need to [allow Docker to access enough system resources](https://docs.docker.com/desktop/settings/mac/), especially CPU and Memory
-    - For Windows with WSL
-        - [Docker Desktop on Windows with WSL](https://docs.docker.com/desktop/wsl/) by Docker
-
-### Hardware 
-It is recommended to have at least 16GB of RAM and 100GB of free storage
-> [!NOTE] 
-> - The pipeline core files use ~6MB
-> - All default databases use ~20GB in total (the optional Bakta database for annotation use an additional ~4GB)
-> - All Docker images use ~14GB in total; alternatively, Singularity images use ~4.7GB in total
-> - The pipeline generates ~1.8GB intermediate files for each sample on average
->     - These files can be removed when the pipeline run is completed, please refer to [Clean Up](#clean-up)
->     - To further reduce storage requirement by sacrificing the ability to resume the pipeline, please refer to [Experimental](#experimental)
+- Require the following `farm22` modules: `openjdk-17.0.8.1_1` and `module load ISG/singularity`
+  ```
+  module load openjdk-17.0.8.1_1
+  module load ISG/singularity
+  ```
 
 ## Accepted Inputs
 - Only Illumina paired-end short reads are supported
 - Any combination of the following input options are supported:
   1. `--reads`:  
-     Specify a directory of per-sample paired   (gzipped) fastq files containing reads   (files named according to the following   pattern `*_{,R}{1,2}{,_001}.{fq,fastq}{,.gz}`):
-       - example 1: `SampleName_R1_001.  fastq.gz`, `SampleName_R2_001.fastq.gz`
-       - example 2: `SampleName_1.fastq.  gz`, `SampleName_2.fastq.gz`
-       - example 3: `SampleName_R1.fq`,   `SampleName_R2.fq`
+     Specify a directory of per-sample paired (gzipped) FASTQ files containing reads (files named according to the following pattern `*_{,R}{1,2}{,_001}.{fq,fastq}{,.gz}`):
+      - example 1: `SampleName_R1_001.fastq.gz`, `SampleName_R2_001.fastq.gz`
+      - example 2: `SampleName_1.fastq.gz`, `SampleName_2.fastq.gz`
+      - example 3: `SampleName_R1.fq`, `SampleName_R2.fq`
 
   2. `--manifest_of_reads` or `--manifest`:  
-     Specify the paths to (gzipped) fastq files
-     containing reads via a CSV manifest, listing the pair of read files pertaining to a sample, one per row.
+     Specify the paths to (gzipped) FASTQ files containing reads via a CSV manifest, listing the pair of read files pertaining to a sample, one per row.
       
   3. **iRODS attribute parameters** (Sanger HPC only):  
      Specify a combination of iRODS attributes to search for reads to use as pipeline input.
@@ -188,7 +166,8 @@ It is recommended to have at least 16GB of RAM and 100GB of free storage
 > - If this is the first run and initialisation was not performed, an Internet connection is required
 
 > [!NOTE]
-> By default, Singularity is used as the container engine and all the processes are executed by LSF. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
+> By default, Singularity is used as the container engine and all the processes are executed by LSF. 
+- You can run the pipeline without options. It will attempt to get the raw reads from the default location (i.e. `input` directory inside the `gps-pipeline` local directory)
     ```
     ./run_pipeline
     ```
