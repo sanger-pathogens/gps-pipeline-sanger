@@ -1,6 +1,6 @@
 # GPS Pipeline (Internal Use at Sanger) <!-- omit in toc -->
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.04.6-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.04.7-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
@@ -16,7 +16,7 @@ The development of this pipeline is part of the GPS Project ([Global Pneumococca
 ## Citation
 If you have used the GPS Pipeline in your research, please cite us in your relevant publications:
 
-> Harry C. H. Hung, Narender Kumar, Victoria Dyster, Corin Yeats, Benjamin Metcalf, Yuan Li, Paulina A. Hawkins, Lesley McGee, Stephen D. Bentley, and Stephanie W. Lo. **A Portable and Scalable Genomic Analysis Pipeline for *Streptococcus pneumoniae* Surveillance: GPS Pipeline**. *bioRxiv* 2024.11.27.625679 **[Preprint]**.  doi: [10.1101/2024.11.27.625679](https://doi.org/10.1101/2024.11.27.625679)
+> Harry C. H. Hung, Narender Kumar, Victoria Dyster, Corin Yeats, Benjamin Metcalf, Yuan Li, Paulina A. Hawkins, Lesley McGee, Stephen D. Bentley, and Stephanie W. Lo. **GPS Pipeline: portable, scalable genomic pipeline for *Streptococcus pneumoniae* surveillance from Global Pneumococcal Sequencing Project**. *Nat Commun* **16**, 8345 (2025). https://doi.org/10.1038/s41467-025-64018-5
 
 
 &nbsp;
@@ -24,8 +24,6 @@ If you have used the GPS Pipeline in your research, please cite us in your relev
 - [Workflow](#workflow)
 - [Usage](#usage)
   - [Requirements](#requirements)
-    - [Software](#software)
-    - [Hardware](#hardware)
   - [Accepted Inputs](#accepted-inputs)
   - [Setup](#setup)
   - [Run](#run)
