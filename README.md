@@ -1,13 +1,13 @@
 # GPS Pipeline (Internal Use at Sanger) <!-- omit in toc -->
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.04.7-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.10.4-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
 
 ### **This fork is optimised for Sanger HPC.** Please use the original [GPS Pipeline](https://github.com/GlobalPneumoSeq/gps-pipeline) for other computing environments. 
 
-The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/GPSC_lineages.html)), and antimicrobial resistance (AMR) against multiple antimicrobials. The pipeline can optionally generate annotations. 
+The GPS Pipeline is a Nextflow pipeline designed for processing raw reads (FASTQ files) of *Streptococcus pneumoniae* samples. After preprocessing, the pipeline performs initial assessment based on the total bases in reads. Passed samples will be further assess based on assembly, mapping, and taxonomy. If the sample passes all quality controls (QC), the pipeline also provides the sample's serotype, multi-locus sequence typing (MLST), lineage (based on the [Global Pneumococcal Sequence Cluster (GPSC)](https://www.pneumogen.net/gps/#/gpsc)), and antimicrobial resistance (AMR) against multiple antimicrobials. The pipeline can optionally generate annotations. 
 
 The pipeline is designed to be easy to set up and use, and is suitable for use on local machines and high-performance computing (HPC) clusters alike.  Additionally, the pipeline only downloads essential files to enable the analysis, and no data is uploaded from the local environment, making it an ideal option for cases where the FASTQ files being analysed is confidential. After initialisation or the first successful complete run, the pipeline can be used offline unless you have changed the selection of any database or container image.
 
@@ -294,7 +294,7 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 | Option | Values | Description |
 | --- | ---| --- |
 | `--assembler` | `"shovill"` or `"unicycler"`<br />(Default: `"shovill"`)| Using which SPAdes-based assembler to assemble the reads. |
-| `--assembler_thread` | Any integer value<br />(Default: `0`) | Number of threads used by the assembler. `0` means all available. |
+| `--assembler_thread` | Any integer value<br />(Default: `0`) | Number of threads used by the assembler. `0` enables auto-detection of available cores (up to a maximum of `16`). |
 | `--min_contig_length` | Any integer value<br />(Default: `500`) | Minimum legnth of contig to be included in the assembly. |
 
 ## Mapping
@@ -311,14 +311,14 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 ## Serotype
 | Option | Values | Description |
 | --- | ---| --- |
-| `--seroba_db_remote` | Any valid URL to a SeroBA release in `.tar.gz` or `.tgz` format<br />(Default: [SeroBA v2.0.5](https://github.com/GlobalPneumoSeq/seroba/archive/refs/tags/v2.0.5.tar.gz))| URL to a SeroBA release. |
+| `--seroba_db_remote` | Any valid URL to a SeroBA release in `.tar.gz` or `.tgz` format<br />(Default: [SeroBA v2.0.6](https://github.com/GlobalPneumoSeq/seroba/archive/refs/tags/v2.0.6.tar.gz))| URL to a SeroBA release. |
 | `--seroba_kmer` | Any integer value<br />(Default: `71`) | Kmer size for creating the KMC database of SeroBA. |
 
 ## Lineage
 | Option | Values | Description |
 | --- | ---| --- |
-| `--poppunk_db_remote` | Any valid URL to a PopPUNK database in `.tar.gz` or `.tgz` format<br />(Default: [GPS v9](https://gps-project.cog.sanger.ac.uk/GPS_v9.tar.gz)) | URL to a PopPUNK database. |
-| `--poppunk_ext_remote` | Any valid URL to a PopPUNK external clusters file in `.csv` format<br />(Default: [GPS v9 GPSC Designation](https://gps-project.cog.sanger.ac.uk/GPS_v9_external_clusters.csv)) | URL to a PopPUNK external clusters file. |
+| `--poppunk_db_remote` | Any valid URL to a PopPUNK database in `.tar.gz` or `.tgz` format<br />(Default: [GPS v11](https://gps-project.cog.sanger.ac.uk/GPS_v11.tar.gz)) | URL to a PopPUNK database. |
+| `--poppunk_ext_remote` | Any valid URL to a PopPUNK external clusters file in `.csv` format<br />(Default: [GPS v11 GPSC Designation](https://gps-project.cog.sanger.ac.uk/GPS_v11_external_clusters.csv)) | URL to a PopPUNK external clusters file. |
 
 ## Other AMR
 | Option | Values | Description |
