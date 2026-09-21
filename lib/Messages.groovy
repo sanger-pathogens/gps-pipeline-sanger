@@ -23,12 +23,12 @@ class Messages {
     public static void helpMessage(log) {
         log.info(
             '''
-            |This is a Nextflow Pipeline for processing Streptococcus pneumoniae sequencing raw reads (FASTQ files)
+            |This is a Nextflow pipeline for processing Streptococcus pneumoniae sequencing raw reads (FASTQ files)
             |
             |Usage:
             |./run_pipeline [option] [value]
             |
-            |All options are optional, some common options:
+            |All options are optional, here are some common options:
             |--reads [PATH]    Path to the input directory that contains the reads to be processed
             |--output [PATH]   Path to the output directory that save the results
             |--init            Alternative workflow for initialisation
