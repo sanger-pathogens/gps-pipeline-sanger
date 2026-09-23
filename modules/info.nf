@@ -552,7 +552,7 @@ process MLST_LAST_UPDATE {
 
     script:
     '''
-    LAST_UPDATE=$(mlst --info | grep spneumoniae | cut -f 5)
+    LAST_UPDATE=$(find /mlst* -name spneumoniae_info.json -exec awk -F'"' '/"last_updated"/ {print $4}' {} ';')
     '''
 }
 

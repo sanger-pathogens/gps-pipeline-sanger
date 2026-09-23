@@ -1,6 +1,6 @@
 # GPS Pipeline (Internal Use at Sanger) <!-- omit in toc -->
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-25.10.4-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-26.04.6-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/singularity/)
 [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/quicklaunch?pipeline=https://github.com/GlobalPneumoSeq/gps-pipeline)
@@ -317,8 +317,8 @@ The pipeline is compatible with [Launchpad](https://docs.seqera.io/platform/late
 ## Lineage
 | Option | Values | Description |
 | --- | ---| --- |
-| `--poppunk_db_remote` | Any valid URL to a PopPUNK database in `.tar.gz` or `.tgz` format<br />(Default: [GPS v11](https://gps-project.cog.sanger.ac.uk/GPS_v11.tar.gz)) | URL to a PopPUNK database. |
-| `--poppunk_ext_remote` | Any valid URL to a PopPUNK external clusters file in `.csv` format<br />(Default: [GPS v11 GPSC Designation](https://gps-project.cog.sanger.ac.uk/GPS_v11_external_clusters.csv)) | URL to a PopPUNK external clusters file. |
+| `--poppunk_db_remote` | Any valid URL to a PopPUNK database in `.tar.gz` or `.tgz` format<br />(Default: [GPS v12](https://zenodo.org/records/22817145/files/GPS_v12.tar.gz)) | URL to a PopPUNK database. |
+| `--poppunk_ext_remote` | Any valid URL to a PopPUNK external clusters file in `.csv` format<br />(Default: [GPS v12 GPSC Designation](https://zenodo.org/records/22817145/files/GPS_v12_external_clusters.csv)) | URL to a PopPUNK external clusters file. |
 
 ## Other AMR
 | Option | Values | Description |
@@ -535,7 +535,7 @@ This project uses open-source components. You can find the homepage or source co
 - License (Apache 2.0): https://github.com/nextflow-io/nextflow/blob/master/COPYING
 - This project is a Nextflow pipeline; Nextflow executable `nextflow` is included in this repository
 
-[PopPUNK](https://poppunk.readthedocs.io/)
+[PopPUNK](https://poppunk-docs.bacpop.org/)
 - Lees JA, Harris SR, Tonkin-Hill G, Gladstone RA, Lo SW, Weiser JN, Corander J, Bentley SD, Croucher NJ. Fast and flexible bacterial genomic epidemiology with PopPUNK. *Genome Research* **29**:1-13 (2019). doi:[10.1101/gr.241455.118](https://dx.doi.org/10.1101/gr.241455.118)
 - License (Apache 2.0): https://github.com/bacpop/PopPUNK/blob/master/LICENSE
 - This tool is used in `LINEAGE` process of the `lineage.nf` module
@@ -552,19 +552,18 @@ This project uses open-source components. You can find the homepage or source co
 - `metadata.tsv` is renamed to `ariba_metadata.tsv` and modified
 - The files are used as the default inputs of `GET_ARIBA_DB` process of the `amr.nf` module
 
-[SeroBA](https://sanger-pathogens.github.io/seroba/)
+[SeroBA](https://github.com/GlobalPneumoSeq/seroba)
+- **SeroBA(v2.0) and SeroBAnk: a robust genome-based serotyping scheme and comprehensive atlas of capsular diversity in Streptococcus pneumoniae**. Lorenz O, King AC, Hung HCH, Ganaie FA, Wyllie, AL, Manna S, Satzke C, van der Linden M, Ravenscroft N, Slotved H-C, McGee L, Nahm MH, Bentley SD, Lo SW. Microbial Genomics 2025, doi: [10.1099/mgen.0.001483](https://doi.org/10.1099/mgen.0.001483)
 - **SeroBA: rapid high-throughput serotyping of Streptococcus pneumoniae from whole genome sequence data**. Epping L, van Tonder, AJ, Gladstone RA, GPS Consortium, Bentley SD, Page AJ, Keane JA, Microbial Genomics 2018, doi: [10.1099/mgen.0.000186](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)
-- License (GPL-3.0): https://github.com/sanger-pathogens/seroba/blob/master/LICENSE
-- This project uses a Docker image of a [fork](https://github.com/GlobalPneumoSeq/seroba)
-  - The fork provides SeroBA with the latest updates as the original repository is no longer maintained
-  - The Docker image provides the containerised environment with SeroBA for `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
+- License (GPL-3.0): https://github.com/GlobalPneumoSeq/seroba/blob/master/LICENSE
+- This project uses SeroBA v2.0 and is used in `GET_SEROBA_DB` and `SEROTYPE` processes of the `serotype.nf` module
 
 [Shovill](https://github.com/tseemann/shovill)
 - Torsten Seemann ([@tseemann](https://github.com/tseemann))
 - License (GPL-3.0): https://github.com/tseemann/shovill/blob/master/LICENSE
 - This tool is used in `ASSEMBLY_SHOVILL` process of the `assembly.nf` module
 
-[SPN-PBP-AMR](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/antimicrobial-resistance-prediction/spn-pbp-amr) (CDC PBP AMR Predictor)
+[SPN-PBP-AMR](https://cgps.gitbook.io/pathogenwatch/technical-descriptions-of-analysis-tools/antimicrobial-resistance-prediction/spn-pbp-amr) (CDC PBP AMR Predictor)
 - [Pathogenwatch](https://pathogen.watch/) ([@pathogenwatch-oss](https://github.com/pathogenwatch-oss))
 - License (MIT): https://github.com/pathogenwatch-oss/spn-resistance-pbp/blob/main/LICENSE
 - This is a modified version of [AMR predictor](https://github.com/BenJamesMetcalf/Spn_Scripts_Reference) by Ben Metcalf ([@BenJamesMetcalf](https://github.com/BenJamesMetcalf)) at the Centre for Disease Control (CDC)
