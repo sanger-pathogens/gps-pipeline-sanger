@@ -6,7 +6,6 @@ include { PIPELINE } from './workflows/pipeline'
 include { INIT } from './workflows/init'
 include { PRINT_VERSION; SAVE_INFO } from './workflows/info_and_version'
 
-
 workflow {
     main:
     // Start message
