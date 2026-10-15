@@ -42,6 +42,20 @@ class Validate {
             read_type: 'skip',
             publish_metadata: 'skip',
             accession_type: 'skip',
+            preexisting_output_dir: 'skip',
+            existing_output_id_suffix: 'skip',
+            existing_output_extension: 'skip',
+            prevent_redownloads: 'skip',
+            only_new_input: 'skip',
+            manifest_from_dir: 'skip',
+            fastq_validation: 'skip',
+            max_depth: 'skip',
+            // From irods config
+            raw_reads_suffix: 'skip',
+            raw_reads_output_dir: 'skip',
+            ont_get_read_type: 'skip',
+            search: 'skip',
+            service_user: 'skip',
             // From GPS Pipeline config
             reads: 'skip', // reads is optional due to mixed input
         ] 
