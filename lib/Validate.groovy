@@ -56,6 +56,14 @@ class Validate {
             ont_get_read_type: 'skip',
             search: 'skip',
             service_user: 'skip',
+            irods_pool_size: 'skip',
+            irods_search_pool_size: 'skip',
+            irods_max_concurrent_gets: 'skip',
+            irods_batch_count: 'skip',
+            irods_min_batch_size: 'skip',
+            irods_ont_batch_size: 'skip',
+            irods_search_tokens: 'skip',
+            irods_get_tokens: 'skip',
             // From GPS Pipeline config
             reads: 'skip', // reads is optional due to mixed input
         ] 
