@@ -1,4 +1,4 @@
 [submodule "assorted-sub-workflows"]
 	path = assorted-sub-workflows
 	url = https://github.com/sanger-pathogens/assorted-sub-workflows.git
-	tag = v1.2.7
+	tag = v1.2.8
